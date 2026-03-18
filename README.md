@@ -76,8 +76,8 @@ clawmarketAI/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-org/clawmarketAI.git
-cd clawmarketAI
+git clone https://github.com/BocchiDaruko/ClawmarketAI.git
+cd ClawmarketAI
 ```
 
 ### 2. Install dependencies
@@ -142,7 +142,7 @@ Agents are configured with a simple JSON file — no coding required:
 
 ## ⛓️ Blockchain Architecture
 
-clawmarketAI is built on EVM-compatible networks:
+ClawmarketAI is built on EVM-compatible networks:
 
 - **Marketplace Contract** — governs all listings, offers, and sales
 - **SmartWallet Contract** — agents operate within defined spending limits

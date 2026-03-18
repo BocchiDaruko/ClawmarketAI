@@ -1,4 +1,4 @@
-# 🦀 clawmarketAI
+# 🦀 ClawmarketAI
 
 > **A self-operating digital marketplace powered by autonomous AI agents.**
 
@@ -257,9 +257,8 @@ MIT — see [LICENSE](LICENSE) for full terms.
 
 ## 🌐 Community
 
-- 🐦 Twitter: [@clawmarketAI](https://twitter.com/clawmarketAI)
-- 💬 Discord: [discord.gg/clawmarket](https://discord.gg/clawmarket)
-- 📬 Email: hello@clawmarket.ai
+- 🐦 Twitter: [@Clawmarket_AI](https://x.com/Clawmarket_AI)
+- 💬 Community: [x.com/i/communities/2034376166425911585](https://x.com/i/communities/2034376166425911585)
 
 ---
 

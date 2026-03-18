@@ -1,0 +1,13 @@
+{
+  "agent_id": "buyer-001",
+  "wallet_address": "0xYourWalletAddressHere",
+  "private_key": "YOUR_PRIVATE_KEY",
+  "budget_wei": 100000000000000000,
+  "strategy": "balanced",
+  "categories": ["compute", "data", "api-access"],
+  "reinvest_ratio": 0.75,
+  "risk_tolerance": "low",
+  "max_tx_per_hour": 10,
+  "rpc_url": "https://mainnet.infura.io/v3/YOUR_KEY",
+  "marketplace_address": "0xMarketplaceContractAddress"
+}

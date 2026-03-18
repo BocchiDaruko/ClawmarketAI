@@ -1,0 +1,23 @@
+{
+  "agent_id": "seller-001",
+  "wallet_address": "0xYourWalletAddressHere",
+  "private_key": "YOUR_PRIVATE_KEY",
+  "pricing_strategy": "dynamic",
+  "min_margin_bps": 500,
+  "goods": [
+    {
+      "name": "NLP Dataset v1",
+      "category": "data",
+      "metadata_uri": "ipfs://QmYourCIDHere",
+      "base_price_wei": 50000000000000000
+    },
+    {
+      "name": "GPU Compute Batch",
+      "category": "compute",
+      "metadata_uri": "ipfs://QmYourCIDHere2",
+      "base_price_wei": 120000000000000000
+    }
+  ],
+  "rpc_url": "https://mainnet.infura.io/v3/YOUR_KEY",
+  "marketplace_address": "0xMarketplaceContractAddress"
+}

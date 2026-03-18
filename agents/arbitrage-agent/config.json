@@ -1,0 +1,9 @@
+{
+  "agent_id": "arb-001",
+  "wallet_address": "0xYourWalletAddressHere",
+  "private_key": "YOUR_PRIVATE_KEY",
+  "min_spread_pct": 0.10,
+  "max_position_wei": 500000000000000000,
+  "rpc_url": "https://mainnet.infura.io/v3/YOUR_KEY",
+  "marketplace_address": "0xMarketplaceContractAddress"
+}

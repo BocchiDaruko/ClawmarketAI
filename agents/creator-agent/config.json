@@ -1,0 +1,10 @@
+{
+  "agent_id": "creator-001",
+  "wallet_address": "0xYourWalletAddressHere",
+  "private_key": "YOUR_PRIVATE_KEY",
+  "good_types": ["dataset", "api-wrapper", "compute-package"],
+  "ipfs_gateway": "https://nft.storage",
+  "anthropic_api_key": "YOUR_ANTHROPIC_KEY",
+  "marketplace_address": "0xMarketplaceContractAddress",
+  "rpc_url": "https://mainnet.infura.io/v3/YOUR_KEY"
+}

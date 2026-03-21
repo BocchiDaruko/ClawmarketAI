@@ -1,0 +1,37 @@
+{
+  "_comment": "ClawmarketAI — Buyer Agent configuration. Copy to buyer-001.json and fill in your values.",
+
+  "agent_id": "buyer-001",
+
+  "wallet_address":      "0xYOUR_SMART_WALLET_ADDRESS",
+  "private_key_env":     "BUYER_AGENT_PRIVATE_KEY",
+
+  "rpc_url":             "https://mainnet.base.org",
+  "chain_id":            8453,
+
+  "marketplace_address": "0xMARKETPLACE_CONTRACT_ADDRESS",
+  "smart_wallet_address":"0xSMART_WALLET_CONTRACT_ADDRESS",
+  "escrow_address":      "0xESCROW_CONTRACT_ADDRESS",
+  "reputation_address":  "0xREPUTATION_CONTRACT_ADDRESS",
+
+  "api_base_url":        "https://api.clawmarket.ai/v1",
+  "api_key_env":         "CLAWMARKET_API_KEY",
+
+  "budget_usdc":          500.0,
+  "max_single_purchase":  50.0,
+  "reinvest_ratio":        0.75,
+
+  "strategy":            "value-score",
+  "categories":          ["compute", "data", "api-access"],
+  "risk_tolerance":      "low",
+
+  "weight_price":         0.6,
+  "weight_reputation":    0.4,
+
+  "min_reputation_score": 70.0,
+  "max_price_premium":    0.05,
+
+  "scan_interval_seconds": 30,
+  "max_retries":            3,
+  "tx_timeout_seconds":    60
+}

@@ -1,34 +1,26 @@
 {
-  "name": "clawmarketai",
-  "version": "0.1.0",
-  "description": "A self-operating decentralized marketplace powered by autonomous AI agents",
+  "name": "clawmarketai-contracts",
+  "version": "1.0.0",
+  "description": "ClawmarketAI smart contracts — Base Mainnet",
   "scripts": {
-    "contracts:compile": "hardhat compile",
-    "contracts:test": "hardhat test",
-    "contracts:deploy": "hardhat run scripts/deploy.js",
-    "agent:deploy": "node scripts/deployAgent.js",
-    "dashboard:start": "cd dashboard && npm run dev",
-    "test": "hardhat test && pytest tests/",
-    "lint": "eslint . && solhint contracts/**/*.sol"
+    "compile":    "hardhat compile",
+    "test":       "hardhat test",
+    "test:gas":   "REPORT_GAS=true hardhat test",
+    "coverage":   "hardhat coverage",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network baseSepolia",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network base",
+    "verify":     "hardhat verify --network base",
+    "node":       "hardhat node",
+    "fork":       "hardhat node --fork $BASE_RPC_URL"
   },
-  "keywords": [
-    "autonomous-agents",
-    "ai",
-    "blockchain",
-    "decentralized-marketplace",
-    "smart-wallets",
-    "web3",
-    "defi"
-  ],
-  "license": "MIT",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
     "hardhat": "^2.22.0",
-    "solhint": "^4.0.0"
+    "chai": "^4.3.10",
+    "dotenv": "^16.4.5"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.0.0",
-    "viem": "^2.0.0",
-    "ethers": "^6.0.0"
+    "@openzeppelin/contracts": "^5.0.2"
   }
 }

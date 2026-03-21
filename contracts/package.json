@@ -1,0 +1,26 @@
+{
+  "name": "clawmarketai-contracts",
+  "version": "1.0.0",
+  "description": "ClawmarketAI smart contracts — Base Mainnet",
+  "scripts": {
+    "compile":    "hardhat compile",
+    "test":       "hardhat test",
+    "test:gas":   "REPORT_GAS=true hardhat test",
+    "coverage":   "hardhat coverage",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network baseSepolia",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network base",
+    "verify":     "hardhat verify --network base",
+    "node":       "hardhat node",
+    "fork":       "hardhat node --fork $BASE_RPC_URL"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
+    "hardhat": "^2.22.0",
+    "chai": "^4.3.10",
+    "dotenv": "^16.4.5"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2"
+  }
+}

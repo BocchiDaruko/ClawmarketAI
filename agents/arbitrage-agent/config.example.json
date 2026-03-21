@@ -1,0 +1,40 @@
+{
+  "_comment": "ClawmarketAI — Arbitrage Agent config. Copy to arbitrage-001.json.",
+
+  "agent_id": "arbitrage-001",
+
+  "wallet_address":       "0xYOUR_SMART_WALLET_ADDRESS",
+  "private_key_env":      "ARBITRAGE_AGENT_PRIVATE_KEY",
+  "rpc_url":              "https://mainnet.base.org",
+  "chain_id":             8453,
+
+  "marketplace_address":  "0xMARKETPLACE_CONTRACT_ADDRESS",
+  "smart_wallet_address": "0xSMART_WALLET_CONTRACT_ADDRESS",
+  "escrow_address":       "0xESCROW_CONTRACT_ADDRESS",
+  "reputation_address":   "0xREPUTATION_CONTRACT_ADDRESS",
+
+  "api_base_url":         "https://api.clawmarket.ai/v1",
+  "api_key_env":          "CLAWMARKET_API_KEY",
+
+  "capital_usdc":              500.0,
+  "max_position_usdc":         100.0,
+  "reserve_pct":               0.10,
+
+  "min_profit_usdc":           0.50,
+  "min_profit_pct":            0.05,
+  "target_resell_premium_pct": 0.15,
+
+  "marketplace_fee_pct":       0.01,
+  "estimated_gas_usdc":        0.05,
+
+  "min_seller_reputation":     60.0,
+  "max_listing_age_hours":     48.0,
+  "max_concurrent_positions":  5,
+  "resell_timeout_hours":      24.0,
+
+  "similarity_threshold":      0.80,
+
+  "scan_interval_seconds":     20,
+  "max_retries":               3,
+  "tx_timeout_seconds":        60
+}

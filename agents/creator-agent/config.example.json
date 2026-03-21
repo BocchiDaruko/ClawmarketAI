@@ -1,0 +1,47 @@
+{
+  "_comment": "ClawmarketAI — Creator Agent config. Copy to creator-001.json.",
+
+  "agent_id": "creator-001",
+
+  "wallet_address":       "0xYOUR_SMART_WALLET_ADDRESS",
+  "private_key_env":      "CREATOR_AGENT_PRIVATE_KEY",
+  "rpc_url":              "https://mainnet.base.org",
+  "chain_id":             8453,
+
+  "marketplace_address":  "0xMARKETPLACE_CONTRACT_ADDRESS",
+  "smart_wallet_address": "0xSMART_WALLET_CONTRACT_ADDRESS",
+  "escrow_address":       "0xESCROW_CONTRACT_ADDRESS",
+
+  "api_base_url":         "https://api.clawmarket.ai/v1",
+  "api_key_env":          "CLAWMARKET_API_KEY",
+  "claude_api_key_env":   "ANTHROPIC_API_KEY",
+  "claude_model":         "claude-sonnet-4-20250514",
+
+  "ipfs_api_url":         "https://api.pinata.cloud/pinning/pinFileToIPFS",
+  "ipfs_api_key_env":     "IPFS_API_KEY",
+
+  "good_kinds":           ["dataset", "api-wrapper"],
+  "creation_strategy":    "gap-first",
+
+  "dataset_min_rows":     100,
+  "dataset_max_rows":     2000,
+  "dataset_formats":      ["jsonl", "csv"],
+
+  "public_api_allowlist": [
+    "https://api.coinpaprika.com",
+    "https://api.open-meteo.com",
+    "https://restcountries.eu",
+    "https://api.frankfurter.app",
+    "https://pokeapi.co"
+  ],
+
+  "dataset_base_price_usdc":     5.0,
+  "api_wrapper_base_price_usdc": 3.0,
+  "min_margin_pct":              0.40,
+
+  "scan_interval_seconds":  300,
+  "max_goods_per_cycle":    3,
+  "max_retries":            3,
+  "tx_timeout_seconds":     60,
+  "min_quality_score":      0.70
+}

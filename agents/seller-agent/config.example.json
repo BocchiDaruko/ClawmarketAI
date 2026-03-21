@@ -1,0 +1,81 @@
+{
+  "_comment": "ClawmarketAI — Seller Agent config. Copy to seller-001.json and fill in your values.",
+
+  "agent_id": "seller-001",
+
+  "wallet_address":       "0xYOUR_SMART_WALLET_ADDRESS",
+  "private_key_env":      "SELLER_AGENT_PRIVATE_KEY",
+
+  "rpc_url":              "https://mainnet.base.org",
+  "chain_id":             8453,
+
+  "marketplace_address":  "0xMARKETPLACE_CONTRACT_ADDRESS",
+  "smart_wallet_address": "0xSMART_WALLET_CONTRACT_ADDRESS",
+  "escrow_address":       "0xESCROW_CONTRACT_ADDRESS",
+  "reputation_address":   "0xREPUTATION_CONTRACT_ADDRESS",
+
+  "api_base_url":         "https://api.clawmarket.ai/v1",
+  "api_key_env":          "CLAWMARKET_API_KEY",
+
+  "goods": [
+    {
+      "good_type":               "compute",
+      "title":                   "GPU Compute — 1 Hour",
+      "description":             "1 hour of A100 GPU time",
+      "base_price_usdc":         8.00,
+      "cost_usdc":               5.00,
+      "min_margin_pct":          0.15,
+      "metadata_uri":            "ipfs://Qm.../compute-1h.json",
+      "delivery_config":         { "provider": "runpod", "tier": "a100-1h" },
+      "max_concurrent_listings": 3
+    },
+    {
+      "good_type":               "data",
+      "title":                   "Crypto Price Feed — 30 Days",
+      "description":             "30-day historical OHLCV for top 100 tokens",
+      "base_price_usdc":         12.00,
+      "cost_usdc":               3.00,
+      "min_margin_pct":          0.20,
+      "metadata_uri":            "ipfs://Qm.../price-feed-30d.json",
+      "delivery_config":         { "s3_bucket": "clawmarket-data", "key": "price-feed-30d.parquet" },
+      "max_concurrent_listings": 5
+    },
+    {
+      "good_type":               "ai-service",
+      "title":                   "Embedding API — 1M Tokens",
+      "description":             "1 million tokens of text embeddings (1536-dim)",
+      "base_price_usdc":         2.00,
+      "cost_usdc":               0.80,
+      "min_margin_pct":          0.25,
+      "metadata_uri":            "ipfs://Qm.../embedding-1m.json",
+      "delivery_config":         { "endpoint": "https://embed.clawmarket.ai", "quota_tokens": 1000000 },
+      "max_concurrent_listings": 10
+    },
+    {
+      "good_type":               "api-access",
+      "title":                   "Market Data API — 7 Days",
+      "description":             "7-day access to ClawmarketAI real-time market API",
+      "base_price_usdc":         5.00,
+      "cost_usdc":               1.00,
+      "min_margin_pct":          0.20,
+      "metadata_uri":            "ipfs://Qm.../market-api-7d.json",
+      "delivery_config":         { "api_key_ttl_days": 7, "rate_limit": "100/min" },
+      "max_concurrent_listings": 8
+    }
+  ],
+
+  "pricing_modes":             ["demand", "competition", "time-decay", "floor-price"],
+  "demand_surge_pct":          0.05,
+  "demand_window_minutes":     60,
+  "competition_undercut_pct":  0.02,
+  "time_decay_pct_per_hour":   0.01,
+  "time_decay_max_pct":        0.30,
+
+  "fulfillment_mode":          "both",
+  "delivery_timeout_seconds":  120,
+
+  "scan_interval_seconds":     45,
+  "max_retries":               3,
+  "tx_timeout_seconds":        60,
+  "relist_after_minutes":      30
+}

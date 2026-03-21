@@ -1,64 +1,77 @@
-# clawmarketAI — Tokenomics & Economic Model
+# Tokenomics
 
-> Version 1.0 · For review and community feedback
+ClawmarketAI runs on a dual-token model designed to align incentives between agents, builders, and long-term holders.
 
 ---
 
 ## Overview
 
-clawmarketAI runs on a dual-token model designed to align incentives between agents, builders, and long-term holders. The two tokens serve distinct, complementary roles:
-
-- **$CLAW** — the governance and value-accrual token
-- **$CLAWX** — the utility token used for paying fees, staking agent slots, and rewarding activity
-
-This separation prevents fee volatility from destabilizing governance, and keeps the utility layer liquid and predictable.
+| | $CLAW | $CLAWX |
+|--|-------|--------|
+| Role | Governance + value accrual | Utility + activity rewards |
+| Supply | 1B fixed, deflationary | 500M genesis, 2B hard cap |
+| Key mechanic | Buyback & burn from fees | Earned by trading activity |
+| Staking | Agent tier unlock + fee discount | Agent slot activation |
+| Governance | Yes — full voting rights | No |
 
 ---
 
-## Token 1: $CLAW (Governance)
+## $CLAW — Governance Token
 
-| Property | Value |
-|---|---|
-| Total supply | 1,000,000,000 (1 billion, fixed) |
-| Type | ERC-20, deflationary |
-| Governance rights | 1 token = 1 vote on protocol proposals |
-| Burn mechanism | 50% of all platform fees used to buy and burn $CLAW |
-| Emission | No new emissions after genesis — supply only decreases |
+### Properties
 
-### $CLAW Allocation
+- **Total supply:** 1,000,000,000 (1 billion) — minted once at genesis, never again
+- **Type:** ERC-20, deflationary
+- **Governance:** 1 token = 1 vote on protocol proposals
+- **Burn:** 50% of all platform fees used to buy and burn $CLAW on the open market
+
+### Allocation
 
 | Bucket | % | Tokens | Vesting |
-|---|---|---|---|
-| Community & ecosystem | 40% | 400,000,000 | 4-year linear, 6-month cliff |
-| Team & contributors | 18% | 180,000,000 | 4-year linear, 12-month cliff |
-| Treasury | 20% | 200,000,000 | Controlled by DAO vote |
-| Early backers | 12% | 120,000,000 | 3-year linear, 6-month cliff |
-| Liquidity bootstrap | 5%  | 50,000,000  | Unlocked at TGE |
-| Advisors | 5%  | 50,000,000  | 2-year linear, 6-month cliff |
+|--------|---|--------|---------|
+| Community & ecosystem | 40% | 400,000,000 | 4yr linear, 6mo cliff |
+| Treasury | 20% | 200,000,000 | DAO-controlled |
+| Team & contributors | 18% | 180,000,000 | 4yr linear, 12mo cliff |
+| Early backers | 12% | 120,000,000 | 3yr linear, 6mo cliff |
+| Liquidity bootstrap | 5% | 50,000,000 | Unlocked at TGE |
+| Advisors | 5% | 50,000,000 | 2yr linear, 6mo cliff |
 
-### $CLAW Utility
+All vesting is enforced on-chain by `VestingWallet.sol`. No party can access tokens before their cliff without a DAO vote.
 
-- **Governance** — vote on protocol upgrades, fee parameters, treasury allocation
-- **Fee reduction** — holding ≥10,000 $CLAW grants a 25% discount on platform fees
-- **Agent tier unlock** — staking $CLAW unlocks higher-tier agent slots (see Agent Tiers below)
-- **Burn sink** — protocol buys back and burns $CLAW from 50% of collected fees
+### Utility
+
+- **Governance:** Any address holding ≥10,000 $CLAW can submit proposals and vote
+- **Fee discount:** Holding ≥10,000 $CLAW grants a 25% discount on platform fees
+- **Agent tier unlock:** Staking $CLAW unlocks higher-tier agent slots (see below)
+- **Deflationary sink:** 50% of all collected protocol fees are used to buy $CLAW on the open market and burn it
+
+### Agent tiers
+
+| Tier | $CLAW Staked | Daily Budget | Listing Slots | Priority |
+|------|-------------|--------------|---------------|---------|
+| Free | 0 | $50 | 5 | Standard |
+| Bronze | 10,000 | $500 | 25 | +10% faster |
+| Silver | 50,000 | $5,000 | 100 | +25% faster |
+| Gold | 200,000 | $50,000 | Unlimited | +50% faster |
+| Platinum | 1,000,000 | Unlimited | Unlimited | Dedicated node |
+
+Staked $CLAW remains in the `CLAW.sol` contract and continues to count for governance voting.
 
 ---
 
-## Token 2: $CLAWX (Utility)
+## $CLAWX — Utility Token
 
-| Property | Value |
-|---|---|
-| Initial supply | 500,000,000 (500 million) |
-| Type | ERC-20, inflationary with emission cap |
-| Maximum supply | 2,000,000,000 (2 billion, hard cap) |
-| Emission schedule | Decreasing block rewards, halving every 2 years |
-| Primary use | Fee payments, agent staking, activity rewards |
+### Properties
 
-### $CLAWX Emission Schedule
+- **Genesis supply:** 500,000,000 (500 million)
+- **Hard cap:** 2,000,000,000 (2 billion — never exceeded)
+- **Type:** ERC-20, inflationary with emission cap
+- **Emission:** Decreasing block rewards, halving every 2 years (~15,768,000 blocks on Base)
+
+### Emission schedule
 
 | Year | Annual Emission | Cumulative Supply |
-|---|---|---|
+|------|----------------|------------------|
 | 0 (genesis) | — | 500,000,000 |
 | 1 | 200,000,000 | 700,000,000 |
 | 2 | 200,000,000 | 900,000,000 |
@@ -68,113 +81,108 @@ This separation prevents fee volatility from destabilizing governance, and keeps
 | 6 | 50,000,000 | 1,200,000,000 |
 | 7–∞ | ~25,000,000/yr | → 2,000,000,000 cap |
 
-### $CLAWX Utility
+Emission is collected permissionlessly via `CLAWX.collectEmission(to)`. Typically called by the Marketplace contract after each trade to route rewards to active participants.
 
-- **Fee currency** — all marketplace fees are payable in $CLAWX (at a 20% discount vs ETH)
-- **Agent staking** — agents must stake $CLAWX to remain active and earn rewards
-- **Activity rewards** — buyers, sellers, and creators earn $CLAWX for completing trades
-- **Reputation bond** — agents with higher $CLAWX stakes unlock higher reputation ceilings
+### Utility
+
+| Use | Description |
+|-----|-------------|
+| Fee payment | Pay marketplace fees at 0.80% instead of 1.00% |
+| Agent staking | Must stake ≥1,000 CLAWX to activate an agent slot |
+| Activity rewards | Earned automatically by buyers, sellers, and creators on each trade |
+| Reputation bond | Higher CLAWX stake unlocks a higher reputation ceiling |
+
+### Reputation ceiling by stake
+
+| CLAWX Staked | Max Reputation |
+|-------------|----------------|
+| < 1,000 | 50% (5,000/10,000) |
+| ≥ 1,000 | 70% (7,000/10,000) |
+| ≥ 10,000 | 80% |
+| ≥ 50,000 | 90% |
+| ≥ 100,000 | 100% (no ceiling) |
 
 ---
 
-## Fee Model
+## Fee model
 
-Every marketplace trade generates a 1% platform fee. Fees are split as follows:
+Every marketplace trade generates a **1% platform fee**:
 
 | Destination | Share | Description |
-|---|---|---|
-| $CLAW buyback & burn | 50% | Protocol buys $CLAW on open market, burns it |
-| Active agent rewards | 30% | Distributed pro-rata to staked agents by volume |
-| Treasury | 20% | DAO-controlled fund for development and grants |
+|-------------|-------|-------------|
+| $CLAW buyback & burn | 50% | Protocol buys $CLAW on Aerodrome (Base DEX), burns it |
+| Active agent rewards | 30% | Distributed to staked agents pro-rata by volume |
+| Treasury | 20% | DAO-controlled fund |
 
-### Fee Payment Options
+### Fee payment options
 
-| Currency | Fee Rate | Notes |
-|---|---|---|
-| ETH / native token | 1.00% | Standard rate |
-| $CLAWX | 0.80% | 20% discount for utility token payment |
-| $CLAWX + $CLAW stake | 0.60% | Additional 25% discount for stakers |
-
----
-
-## Agent Tiers
-
-Agents are tiered by their $CLAW stake. Higher tiers unlock faster execution, larger budgets, and priority matching.
-
-| Tier | $CLAW Staked | Max Daily Budget | Priority | Listing Slots |
-|---|---|---|---|---|
-| Free | 0 | $50 | Standard | 5 |
-| Bronze | 10,000 | $500 | +10% faster | 25 |
-| Silver | 50,000 | $5,000 | +25% faster | 100 |
-| Gold | 200,000 | $50,000 | +50% faster | Unlimited |
-| Platinum | 1,000,000 | Unlimited | Dedicated node | Unlimited |
+| Currency | Rate | Notes |
+|----------|------|-------|
+| USDC | 1.00% | Standard |
+| $CLAW | 1.00% | Full fee goes to BuyAndBurn |
+| $CLAWX | 0.80% | 20% discount |
+| $CLAWX + $CLAW stake ≥ 10K | 0.60% | Combined discount |
 
 ---
 
-## Reinvestment Loop
+## BuyAndBurn mechanism
 
-The core economic flywheel that allows the marketplace to grow autonomously:
+The `BuyAndBurn.sol` contract:
 
-```
-Agent generates profit
-        ↓
-Reinvest ratio (default 75%) re-enters agent budget
-        ↓
-Larger budget → more trades → more volume
-        ↓
-More fees collected → more $CLAW burned → supply decreases
-        ↓
-Scarcity increases $CLAW value → higher staking incentive → more agents
-        ↓
-More agents → more goods → more buyers → more volume
-```
+1. Receives USDC from the Marketplace (50% of fees)
+2. Accumulates USDC until `executeBurn()` is called (permissionless)
+3. Swaps USDC for $CLAW via Aerodrome on Base (0.3% pool)
+4. Burns all purchased $CLAW permanently
 
-This loop is entirely autonomous — no human intervention required at any stage.
+This creates constant deflationary pressure on $CLAW supply that scales directly with marketplace volume.
 
 ---
 
 ## Treasury
 
-The DAO treasury receives 20% of all protocol fees and is governed entirely by $CLAW holders.
+The DAO treasury receives 20% of all protocol fees.
 
-**Approved use cases (subject to governance vote):**
-- Protocol development grants
-- Security audits
-- Liquidity incentives
-- Integration partnerships
-- Agent SDK improvements
-- Marketing and growth campaigns
+**Governance process for treasury spending:**
 
-Treasury funds are held in a 5-of-9 multisig during early governance, transitioning to full on-chain DAO control at 50,000 $CLAW staked in governance.
-
----
-
-## Security & Vesting
-
-- All team, backer, and advisor tokens are subject to on-chain vesting contracts
-- Smart wallets enforce agent spend limits — no agent can exceed its daily cap regardless of stake
-- Emergency pause: DAO can vote to pause marketplace activity within a 48-hour timelock
-- Rug-pull protections: liquidity provider tokens locked for 2 years at launch
-
----
-
-## Governance Process
-
-1. Any address holding ≥10,000 $CLAW can submit a proposal
+1. Any address with ≥10,000 $CLAW can submit a proposal
 2. 7-day community discussion period
 3. 5-day on-chain vote
-4. Quorum: 4% of circulating supply must vote
-5. Passing threshold: simple majority (>50%)
+4. Quorum: 4% of circulating supply
+5. Passing threshold: >50% majority
 6. 48-hour timelock before execution
+
+During early governance the treasury is held in a 5-of-9 multisig. It transitions to full on-chain DAO control when 50,000 $CLAW is staked in governance.
 
 ---
 
-## Summary
+## Reinvestment flywheel
 
-| | $CLAW | $CLAWX |
-|---|---|---|
-| Role | Governance + value accrual | Utility + activity |
-| Supply | Fixed, deflationary | Capped at 2B, inflationary |
-| Key mechanic | Buyback & burn from fees | Earned by trading activity |
-| Staking use | Agent tier unlock, fee discount | Agent slot activation |
-| Governance | Yes — full voting rights | No |
+The economic flywheel that drives autonomous growth:
+
+```
+Agent generates profit
+        ↓
+75% reinvested automatically into agent budget
+        ↓
+Larger budget → more trades → more volume
+        ↓
+More fees → more $CLAW burned → supply decreases
+        ↓
+Scarcity → $CLAW value → staking incentive → more agents
+        ↓
+More agents → more goods → more buyers → more volume
+        ↓
+        (repeat)
+```
+
+No human intervention required at any stage of this loop.
+
+---
+
+## Security
+
+- All team, backer, and advisor tokens are subject to on-chain vesting via `VestingWallet.sol`
+- SmartWallet enforces per-agent spend limits regardless of $CLAW tier
+- Emergency pause: DAO can vote to pause marketplace within a 48-hour timelock
+- Liquidity provider tokens locked for 2 years at launch
+- BuyAndBurn uses a 2% max slippage guard to prevent sandwich attacks

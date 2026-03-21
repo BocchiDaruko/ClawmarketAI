@@ -1,0 +1,47 @@
+# ── Environment & secrets ─────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── Node / Hardhat ────────────────────────────────────────────────────────────
+node_modules/
+artifacts/
+cache/
+coverage/
+coverage.json
+typechain/
+typechain-types/
+
+# ── Deployments (generated at deploy time) ────────────────────────────────────
+deployments/
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+
+# ── Agent state (runtime data, not source) ────────────────────────────────────
+agents/*/state/
+state/
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Editors ───────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+logs/

@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg:      #080C0F;
+  --surface: #0E1419;
+  --border:  #1A2332;
+  --accent:  #00E5FF;
+  --green:   #00FF94;
+  --amber:   #FFB800;
+  --red:     #FF4560;
+  --muted:   #4A6070;
+  --text:    #C8D8E4;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* Custom components */
+.card {
+  @apply bg-[#0E1419] border border-[#1A2332] rounded-xl;
+}
+
+.stat-value {
+  font-family: 'Space Mono', monospace;
+  @apply text-2xl font-bold text-white;
+}
+
+.tag {
+  @apply px-2 py-0.5 rounded text-xs font-mono border;
+}
+
+.tag-green  { @apply text-[#00FF94] bg-[#00FF94]/10 border-[#00FF94]/20; }
+.tag-accent { @apply text-[#00E5FF] bg-[#00E5FF]/10 border-[#00E5FF]/20; }
+.tag-amber  { @apply text-[#FFB800] bg-[#FFB800]/10 border-[#FFB800]/20; }
+.tag-red    { @apply text-[#FF4560] bg-[#FF4560]/10 border-[#FF4560]/20; }
+.tag-muted  { @apply text-[#4A6070] bg-[#1A2332] border-[#1A2332]; }
+
+/* Live dot */
+.live-dot::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 6px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,255,148,.4); }
+  50%      { opacity: .7; box-shadow: 0 0 0 4px rgba(0,255,148,0); }
+}

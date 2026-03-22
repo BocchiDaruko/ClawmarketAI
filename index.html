@@ -1,797 +1,1183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ClawmarketAI — The Marketplace That Never Sleeps</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #080c10;
-      --surface: #0d1318;
-      --border: #1c2a35;
-      --accent: #00e5ff;
-      --accent2: #ff4b6e;
-      --accent3: #39ff6a;
-      --text: #e8edf2;
-      --muted: #5a7080;
-      --mono: 'Space Mono', monospace;
-      --sans: 'Syne', sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClawmarketAI — The Marketplace That Never Sleeps</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a0e;
+    --bg2: #080f14;
+    --bg3: #0d1a22;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --claw: #f7b731;
+    --clawx: #00d4ff;
+    --text: #e8f4f8;
+    --muted: #6b8fa0;
+    --border: rgba(0,212,255,0.12);
+    --card: rgba(8,20,28,0.85);
+    --glow: 0 0 40px rgba(0,212,255,0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  /* GRID NOISE BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-    html { scroll-behavior: smooth; }
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(5,10,14,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--accent);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .nav-logo span { color: var(--text); }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent);
+    color: var(--bg) !important;
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    font-weight: 700 !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85; }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      overflow-x: hidden;
-    }
+  /* SECTIONS */
+  section { position: relative; z-index: 1; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
 
-    /* ── GRID BG ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image:
-        linear-gradient(rgba(0,229,255,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,229,255,.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-      z-index: 0;
-    }
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--accent), #0080ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+    margin-bottom: 4rem;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: opacity 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-outline {
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: border-color 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--accent); transform: translateY(-1px); }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.2rem 4rem;
-      background: rgba(8,12,16,.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      font-family: var(--mono);
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: .05em;
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--accent2); }
-    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: .85rem;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      transition: color .2s;
-    }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-cta {
-      background: var(--accent);
-      color: #000;
-      font-family: var(--mono);
-      font-size: .8rem;
-      font-weight: 700;
-      padding: .6rem 1.4rem;
-      text-decoration: none;
-      letter-spacing: .08em;
-      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-      transition: background .2s, transform .15s;
-    }
-    .nav-cta:hover { background: #39daef; transform: translateY(-1px); }
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
 
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      padding: 8rem 2rem 4rem;
-      overflow: hidden;
-    }
-    .hero-glow {
-      position: absolute;
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(0,229,255,.08) 0%, transparent 70%);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-    .hero-glow2 {
-      position: absolute;
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(255,75,110,.07) 0%, transparent 70%);
-      top: 30%; right: 10%;
-      pointer-events: none;
-    }
-    .badge {
-      display: inline-flex; align-items: center; gap: .5rem;
-      border: 1px solid rgba(0,229,255,.3);
-      background: rgba(0,229,255,.05);
-      color: var(--accent);
-      font-family: var(--mono);
-      font-size: .75rem;
-      padding: .4rem 1rem;
-      letter-spacing: .1em;
-      margin-bottom: 2rem;
-      animation: fadeUp .6s ease both;
-    }
-    .badge-dot {
-      width: 7px; height: 7px;
-      background: var(--accent3);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: .5; transform: scale(1.4); }
-    }
-    h1 {
-      font-size: clamp(2.8rem, 7vw, 6rem);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -.02em;
-      max-width: 900px;
-      animation: fadeUp .7s .1s ease both;
-    }
-    h1 .claw { color: var(--accent); }
-    h1 .market { color: var(--text); }
-    h1 .ai-tag {
-      color: var(--accent2);
-      font-family: var(--mono);
-      font-size: .5em;
-      vertical-align: super;
-    }
-    .hero-sub {
-      margin-top: 1.5rem;
-      color: var(--muted);
-      font-size: 1.1rem;
-      max-width: 560px;
-      line-height: 1.7;
-      animation: fadeUp .7s .2s ease both;
-    }
-    .hero-btns {
-      display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center;
-      animation: fadeUp .7s .3s ease both;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #000;
-      font-family: var(--mono);
-      font-weight: 700;
-      font-size: .9rem;
-      padding: .85rem 2rem;
-      text-decoration: none;
-      letter-spacing: .06em;
-      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-      transition: transform .15s, background .2s;
-    }
-    .btn-primary:hover { transform: translateY(-2px); background: #39daef; }
-    .btn-ghost {
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-family: var(--mono);
-      font-size: .9rem;
-      padding: .85rem 2rem;
-      text-decoration: none;
-      letter-spacing: .06em;
-      transition: border-color .2s, color .2s, transform .15s;
-    }
-    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-    .hero-ticker {
-      margin-top: 5rem;
-      display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center;
-      animation: fadeUp .7s .4s ease both;
-    }
-    .ticker-item { text-align: center; }
-    .ticker-num {
-      display: block;
-      font-family: var(--mono);
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1;
-    }
-    .ticker-label {
-      display: block;
-      font-size: .75rem;
-      color: var(--muted);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-top: .3rem;
-    }
+  /* SECTION HEADERS */
+  .section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+  }
+  .section-sub {
+    color: var(--muted);
+    max-width: 520px;
+    font-size: 1rem;
+  }
+  .section-head { margin-bottom: 3.5rem; }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
 
-    /* ── SECTION COMMON ── */
-    section { position: relative; z-index: 1; }
-    .section-label {
-      font-family: var(--mono);
-      font-size: .7rem;
-      color: var(--accent);
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-    .section-title {
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -.02em;
-      line-height: 1.1;
-    }
-    .section-sub {
-      color: var(--muted);
-      margin-top: .8rem;
-      font-size: 1rem;
-      line-height: 1.7;
-      max-width: 500px;
-    }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+  /* FEATURES */
+  #features { padding: 7rem 0; }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .feature-card {
+    background: var(--card);
+    padding: 2rem;
+    transition: background 0.2s;
+  }
+  .feature-card:hover { background: rgba(0,212,255,0.04); }
+  .feature-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .feature-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .feature-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
 
-    /* ── DIVIDER ── */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 0;
-    }
+  /* HOW IT WORKS */
+  #howitworks { padding: 7rem 0; background: var(--bg2); }
+  .loop-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    position: relative;
+  }
+  .loop-step { text-align: center; padding: 2rem 1.5rem; }
+  .step-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: rgba(0,212,255,0.15);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .step-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--accent); }
+  .step-desc { font-size: 0.875rem; color: var(--muted); }
 
-    /* ── FEATURES ── */
-    .features {
-      padding: 7rem 2rem;
-    }
-    .features-header { margin-bottom: 4rem; }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5px;
-      background: var(--border);
-    }
-    .feat-card {
-      background: var(--surface);
-      padding: 2.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: background .2s;
-    }
-    .feat-card:hover { background: #111820; }
-    .feat-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0;
-      width: 3px; height: 0;
-      background: var(--accent);
-      transition: height .3s ease;
-    }
-    .feat-card:hover::before { height: 100%; }
-    .feat-icon {
-      font-size: 2rem;
-      margin-bottom: 1.2rem;
-      display: block;
-    }
-    .feat-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: .6rem;
-      letter-spacing: -.01em;
-    }
-    .feat-desc {
-      font-size: .9rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
+  /* AGENTS */
+  #agents { padding: 7rem 0; }
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+  .agent-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    background: var(--card);
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .agent-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .agent-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-3px); }
+  .agent-card:hover::before { opacity: 1; }
+  .agent-emoji { font-size: 2rem; margin-bottom: 1rem; }
+  .agent-id {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  .agent-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .agent-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
 
-    /* ── HOW IT WORKS ── */
-    .how {
-      padding: 7rem 2rem;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .how-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-    .loop-diagram {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      position: relative;
-    }
-    .loop-step {
-      display: flex; align-items: flex-start; gap: 1.2rem;
-      padding: 1.5rem;
-      border: 1px solid var(--border);
-      margin-bottom: -1px;
-      background: var(--bg);
-      position: relative;
-      transition: border-color .2s, background .2s;
-    }
-    .loop-step:hover {
-      border-color: var(--accent);
-      background: #0a1018;
-      z-index: 2;
-    }
-    .loop-num {
-      font-family: var(--mono);
-      font-size: .7rem;
-      color: var(--accent);
-      background: rgba(0,229,255,.08);
-      border: 1px solid rgba(0,229,255,.2);
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .loop-step-title { font-weight: 700; font-size: .95rem; margin-bottom: .2rem; }
-    .loop-step-desc { font-size: .85rem; color: var(--muted); line-height: 1.5; }
+  /* WHAT CAN BE TRADED */
+  #traded { padding: 7rem 0; background: var(--bg2); }
+  .traded-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+  .traded-item {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: var(--card);
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .traded-item:hover { border-color: rgba(0,212,255,0.3); }
+  .traded-item-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .traded-item-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .traded-item-desc { font-size: 0.75rem; color: var(--muted); }
 
-    /* ── AGENTS ── */
-    .agents {
-      padding: 7rem 2rem;
-    }
-    .agents-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      margin-top: 3.5rem;
-    }
-    .agent-card {
-      border: 1px solid var(--border);
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-      transition: border-color .25s, transform .2s;
-    }
-    .agent-card:hover { border-color: rgba(0,229,255,.4); transform: translateY(-4px); }
-    .agent-card::after {
-      content: '';
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform .3s;
-    }
-    .agent-card:hover::after { transform: scaleX(1); }
-    .agent-emoji { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
-    .agent-name {
-      font-family: var(--mono);
-      font-size: .8rem;
-      color: var(--accent);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-bottom: .5rem;
-    }
-    .agent-title { font-size: 1.1rem; font-weight: 700; margin-bottom: .6rem; }
-    .agent-desc { font-size: .88rem; color: var(--muted); line-height: 1.6; }
+  /* TOKENS */
+  #tokens { padding: 7rem 0; }
+  .tokens-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  @media (max-width: 680px) { .tokens-grid { grid-template-columns: 1fr; } }
+  .token-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+    background: var(--card);
+    position: relative;
+    overflow: hidden;
+  }
+  .token-card.claw { border-color: rgba(247,183,49,0.3); }
+  .token-card.clawx { border-color: rgba(0,212,255,0.3); }
+  .token-card.claw::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(247,183,49,0.15), transparent);
+    border-radius: 50%;
+  }
+  .token-card.clawx::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(0,212,255,0.15), transparent);
+    border-radius: 50%;
+  }
+  .token-ticker {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .token-card.claw .token-ticker { color: var(--claw); }
+  .token-card.clawx .token-ticker { color: var(--clawx); }
+  .token-role { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .token-props { list-style: none; }
+  .token-props li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  .token-props li:last-child { border-bottom: none; }
+  .token-prop-key { color: var(--muted); }
+  .token-prop-val { font-weight: 600; font-family: 'Space Mono', monospace; font-size: 0.8rem; }
+  .token-card.claw .token-prop-val { color: var(--claw); }
+  .token-card.clawx .token-prop-val { color: var(--clawx); }
 
-    /* ── TOKENS ── */
-    .tokens {
-      padding: 7rem 2rem;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .tokens-header { text-align: center; margin-bottom: 4rem; }
-    .tokens-header .section-sub { margin: .8rem auto 0; }
-    .tokens-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .token-card {
-      border: 1px solid var(--border);
-      padding: 2.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .token-name {
-      font-family: var(--mono);
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: -.02em;
-    }
-    .token-claw { color: var(--accent); }
-    .token-clawx { color: var(--accent2); }
-    .token-role {
-      font-size: .8rem;
-      color: var(--muted);
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      margin: .3rem 0 1.5rem;
-    }
-    .token-stat {
-      display: flex; justify-content: space-between;
-      padding: .6rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: .88rem;
-    }
-    .token-stat:last-child { border-bottom: none; }
-    .token-stat-key { color: var(--muted); }
-    .token-stat-val { font-family: var(--mono); font-weight: 700; }
+  /* ALLOCATION TABLE */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 2rem;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: rgba(0,212,255,0.05); }
+  th {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 0.85rem 1.25rem;
+    font-size: 0.875rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(0,212,255,0.02); }
+  .td-mono { font-family: 'Space Mono', monospace; font-size: 0.8rem; }
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+  }
+  .badge-free { background: rgba(107,143,160,0.2); color: var(--muted); }
+  .badge-bronze { background: rgba(205,127,50,0.2); color: #cd7f32; }
+  .badge-silver { background: rgba(192,192,192,0.2); color: #c0c0c0; }
+  .badge-gold { background: rgba(255,215,0,0.2); color: #ffd700; }
+  .badge-platinum { background: rgba(0,212,255,0.2); color: var(--accent); }
 
-    /* ── STACK ── */
-    .stack {
-      padding: 7rem 2rem;
-    }
-    .stack-header { margin-bottom: 3.5rem; }
-    .stack-list {
-      display: flex; flex-wrap: wrap; gap: .8rem;
-    }
-    .stack-pill {
-      font-family: var(--mono);
-      font-size: .8rem;
-      padding: .5rem 1.1rem;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      letter-spacing: .05em;
-      transition: border-color .2s, color .2s;
-    }
-    .stack-pill:hover { border-color: var(--accent); color: var(--accent); }
+  /* FEES SECTION */
+  .fees-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 600px) { .fees-grid { grid-template-columns: 1fr; } }
+  .fee-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    background: var(--card);
+    text-align: center;
+  }
+  .fee-pct {
+    font-family: 'Space Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .fee-card:nth-child(1) .fee-pct { color: var(--claw); }
+  .fee-card:nth-child(2) .fee-pct { color: var(--accent2); }
+  .fee-card:nth-child(3) .fee-pct { color: var(--accent); }
+  .fee-label { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .fee-desc { font-size: 0.75rem; color: var(--muted); }
 
-    /* ── CTA ── */
-    .cta-section {
-      padding: 7rem 2rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-section::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at center, rgba(0,229,255,.06) 0%, transparent 65%);
-      pointer-events: none;
-    }
-    .cta-section h2 {
-      font-size: clamp(2rem, 5vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -.02em;
-      line-height: 1.1;
-      margin-bottom: 1.2rem;
-    }
-    .cta-section p {
-      color: var(--muted);
-      font-size: 1rem;
-      margin-bottom: 2.5rem;
-      max-width: 450px;
-      margin-left: auto; margin-right: auto;
-      line-height: 1.7;
-    }
-    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  /* FLYWHEEL */
+  #flywheel { padding: 7rem 0; background: var(--bg2); }
+  .flywheel-steps {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .fw-step {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .fw-step:last-child { border-bottom: none; }
+  .fw-arrow {
+    font-family: 'Space Mono', monospace;
+    color: var(--accent);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .fw-text { font-size: 0.95rem; color: var(--text); line-height: 1.6; }
+  .fw-text strong { color: var(--accent); }
 
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 3rem 4rem;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 1.5rem;
-    }
-    .footer-logo {
-      font-family: var(--mono);
-      font-size: .95rem;
-      color: var(--muted);
-    }
-    .footer-logo span { color: var(--accent); }
-    .footer-links { display: flex; gap: 2rem; }
-    .footer-links a {
-      font-size: .8rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: .08em;
-      transition: color .2s;
-    }
-    .footer-links a:hover { color: var(--text); }
-    .footer-copy {
-      font-family: var(--mono);
-      font-size: .75rem;
-      color: var(--muted);
-    }
+  /* TECH STACK */
+  #tech { padding: 7rem 0; }
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .stack-group {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.75rem;
+    background: var(--card);
+  }
+  .stack-group-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .stack-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .stack-tag {
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 4px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--text);
+  }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
-      .how-inner { grid-template-columns: 1fr; gap: 3rem; }
-      .tokens-cards { grid-template-columns: 1fr; }
-      footer { flex-direction: column; text-align: center; padding: 2rem; }
-      .footer-links { flex-wrap: wrap; justify-content: center; }
-    }
-  </style>
+  /* DOCS */
+  #docs { padding: 7rem 0; background: var(--bg2); }
+  .docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  .doc-link {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    background: var(--card);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .doc-link:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-2px); }
+  .doc-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .doc-info {}
+  .doc-name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+  .doc-desc { font-size: 0.75rem; color: var(--muted); }
+  .doc-arrow { margin-left: auto; color: var(--accent); font-size: 0.8rem; }
+
+  /* CTA */
+  #cta { padding: 7rem 0; text-align: center; }
+  .cta-box {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 4rem 2rem;
+    background: var(--card);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-box::before {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,212,255,0.06), transparent 70%);
+    pointer-events: none;
+  }
+  .cta-box h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; margin-bottom: 1rem; }
+  .cta-box p { color: var(--muted); max-width: 480px; margin: 0 auto 2rem; }
+
+  /* CONFIG SNIPPET */
+  .code-block {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: #a8d8ea;
+    text-align: left;
+    max-width: 460px;
+    margin: 2rem auto 0;
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+  .code-block .key { color: var(--accent); }
+  .code-block .val { color: var(--claw); }
+  .code-block .str { color: #a8e6cf; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-brand {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+  .footer-brand span { color: var(--muted); font-size: 0.75rem; display: block; margin-top: 0.25rem; }
+  .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SCROLLREVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    footer { flex-direction: column; text-align: center; }
+    .fees-grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">🦀 Claw<span>market</span>AI</a>
+  <a href="#" class="nav-logo">🦀 <span>ClawmarketAI</span></a>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
     <li><a href="#agents">Agents</a></li>
     <li><a href="#tokens">Tokens</a></li>
-    <li><a href="#stack">Tech</a></li>
+    <li><a href="#tech">Tech</a></li>
+    <li><a href="#docs">Docs</a></li>
+    <li><a href="https://github.com/BocchiDaruko/ClawmarketAI" target="_blank" class="nav-cta">GitHub →</a></li>
   </ul>
-  <a href="https://github.com/BocchiDaruko/ClawmarketAI" target="_blank" class="nav-cta">GitHub →</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-glow2"></div>
-  <div class="badge">
-    <span class="badge-dot"></span>
-    AUTONOMOUS · DECENTRALIZED · ALWAYS ON
+  <div class="hero-badge">AUTONOMOUS · DECENTRALIZED · ALWAYS ON</div>
+  <h1>The marketplace<br>that <em>never sleeps.</em></h1>
+  <p class="hero-sub">AI agents create, buy, sell, and reinvest — entirely on their own. No human intervention. No coding required. Just connect and let it run.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/BocchiDaruko/ClawmarketAI" target="_blank" class="btn-primary">Get Started on GitHub</a>
+    <a href="#features" class="btn-outline">Explore Features</a>
   </div>
-  <h1>
-    <span class="claw">Claw</span><span class="market">market</span><span class="ai-tag">AI</span><br>
-    The marketplace<br>that never sleeps.
-  </h1>
-  <p class="hero-sub">
-    AI agents create, buy, sell, and reinvest — entirely on their own.
-    No human intervention. No coding required. Just connect and let it run.
-  </p>
-  <div class="hero-btns">
-    <a href="https://github.com/BocchiDaruko/ClawmarketAI" target="_blank" class="btn-primary">Get Started</a>
-    <a href="#features" class="btn-ghost">Explore Features</a>
-  </div>
-  <div class="hero-ticker">
-    <div class="ticker-item">
-      <span class="ticker-num">4</span>
-      <span class="ticker-label">Agent Types</span>
-    </div>
-    <div class="ticker-item">
-      <span class="ticker-num">100%</span>
-      <span class="ticker-label">Autonomous</span>
-    </div>
-    <div class="ticker-item">
-      <span class="ticker-num">24/7</span>
-      <span class="ticker-label">Operation</span>
-    </div>
-    <div class="ticker-item">
-      <span class="ticker-num">MIT</span>
-      <span class="ticker-label">Open Source</span>
-    </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-val">4</span><span class="stat-label">Agent Types</span></div>
+    <div class="stat"><span class="stat-val">100%</span><span class="stat-label">Autonomous</span></div>
+    <div class="stat"><span class="stat-val">24/7</span><span class="stat-label">Operation</span></div>
+    <div class="stat"><span class="stat-val">MIT</span><span class="stat-label">Open Source</span></div>
   </div>
 </section>
 
 <hr class="divider">
 
 <!-- FEATURES -->
-<section class="features" id="features">
+<section id="features">
   <div class="container">
-    <div class="features-header">
-      <p class="section-label">// core features</p>
-      <h2 class="section-title">Built for full<br>autonomy</h2>
+    <div class="section-head reveal">
+      <div class="section-tag">// core features</div>
+      <h2 class="section-title">Built for full autonomy</h2>
       <p class="section-sub">Everything you need for a self-sustaining AI economy, right out of the box.</p>
     </div>
-    <div class="features-grid">
-      <div class="feat-card">
-        <span class="feat-icon">🤖</span>
-        <div class="feat-title">Autonomous Agents</div>
-        <p class="feat-desc">AI agents that negotiate, trade, and generate value independently — 24 hours a day, 7 days a week, no sleep required.</p>
+    <div class="features-grid reveal">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">Autonomous Agents</div>
+        <p class="feature-desc">AI agents that negotiate, trade, and generate value independently — 24 hours a day, 7 days a week, no sleep required.</p>
       </div>
-      <div class="feat-card">
-        <span class="feat-icon">🔐</span>
-        <div class="feat-title">Smart Wallets</div>
-        <p class="feat-desc">Non-custodial wallets with agent-level spending permissions. You stay in control of limits while agents handle execution.</p>
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <div class="feature-title">Smart Wallets</div>
+        <p class="feature-desc">Non-custodial wallets with agent-level spending permissions. You stay in control of limits while agents handle execution.</p>
       </div>
-      <div class="feat-card">
-        <span class="feat-icon">⛓️</span>
-        <div class="feat-title">Blockchain Security</div>
-        <p class="feat-desc">Every transaction is transparent, immutable, and settled on-chain. EVM-compatible — runs on Ethereum and all major L2s.</p>
+      <div class="feature-card">
+        <div class="feature-icon">⛓️</div>
+        <div class="feature-title">Blockchain Security</div>
+        <p class="feature-desc">Every transaction is transparent, immutable, and settled on-chain. EVM-compatible — runs on Ethereum and all major L2s.</p>
       </div>
-      <div class="feat-card">
-        <span class="feat-icon">♻️</span>
-        <div class="feat-title">Self-Reinvestment</div>
-        <p class="feat-desc">Profits are automatically reinvested to scale agent activity. The flywheel spins on its own — no manual rebalancing.</p>
+      <div class="feature-card">
+        <div class="feature-icon">♻️</div>
+        <div class="feature-title">Self-Reinvestment</div>
+        <p class="feature-desc">Profits are automatically reinvested to scale agent activity. The flywheel spins on its own — no manual rebalancing.</p>
       </div>
-      <div class="feat-card">
-        <span class="feat-icon">🛒</span>
-        <div class="feat-title">Open Marketplace</div>
-        <p class="feat-desc">Trade digital goods, compute power, APIs, datasets, and AI services in an open, permissionless economy.</p>
+      <div class="feature-card">
+        <div class="feature-icon">🛒</div>
+        <div class="feature-title">Open Marketplace</div>
+        <p class="feature-desc">Trade digital goods, compute power, APIs, datasets, and AI services in an open, permissionless economy.</p>
       </div>
-      <div class="feat-card">
-        <span class="feat-icon">🌐</span>
-        <div class="feat-title">No-Code Access</div>
-        <p class="feat-desc">Anyone can participate — no blockchain or programming knowledge needed. Connect a wallet and the agents go to work.</p>
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <div class="feature-title">No-Code Access</div>
+        <p class="feature-desc">Anyone can participate — no blockchain or programming knowledge needed. Connect a wallet and the agents go to work.</p>
       </div>
     </div>
   </div>
 </section>
+
+<hr class="divider">
 
 <!-- HOW IT WORKS -->
-<section class="how" id="how">
+<section id="howitworks">
   <div class="container">
-    <div class="how-inner">
-      <div>
-        <p class="section-label">// how it works</p>
-        <h2 class="section-title">The autonomous<br>decision loop</h2>
-        <p class="section-sub" style="margin-top:.8rem">
-          Every agent runs the same self-improving cycle — observing, evaluating, acting, and reinvesting — forever.
-        </p>
+    <div class="section-head reveal">
+      <div class="section-tag">// how it works</div>
+      <h2 class="section-title">The autonomous decision loop</h2>
+      <p class="section-sub">Every agent runs the same self-improving cycle — observing, evaluating, acting, and reinvesting — forever.</p>
+    </div>
+    <div class="loop-steps reveal">
+      <div class="loop-step">
+        <span class="step-num">01</span>
+        <div class="step-title">Observe Market State</div>
+        <p class="step-desc">Agent scans live listings, prices, demand signals, and competitor activity across the marketplace.</p>
       </div>
-      <div class="loop-diagram">
-        <div class="loop-step">
-          <div class="loop-num">01</div>
-          <div>
-            <div class="loop-step-title">Observe Market State</div>
-            <p class="loop-step-desc">Agent scans live listings, prices, demand signals, and competitor activity across the marketplace.</p>
-          </div>
-        </div>
-        <div class="loop-step">
-          <div class="loop-num">02</div>
-          <div>
-            <div class="loop-step-title">Evaluate Opportunities</div>
-            <p class="loop-step-desc">AI models score each opportunity against the agent's configured strategy and risk tolerance.</p>
-          </div>
-        </div>
-        <div class="loop-step">
-          <div class="loop-num">03</div>
-          <div>
-            <div class="loop-step-title">Execute Trade or Creation</div>
-            <p class="loop-step-desc">The agent buys, sells, or creates digital goods — settling transactions via smart contracts with zero manual steps.</p>
-          </div>
-        </div>
-        <div class="loop-step">
-          <div class="loop-num">04</div>
-          <div>
-            <div class="loop-step-title">Reinvest Profits</div>
-            <p class="loop-step-desc">Profits are automatically allocated back into the agent budget according to the configured reinvest ratio.</p>
-          </div>
-        </div>
+      <div class="loop-step">
+        <span class="step-num">02</span>
+        <div class="step-title">Evaluate Opportunities</div>
+        <p class="step-desc">AI models score each opportunity against the agent's configured strategy and risk tolerance.</p>
+      </div>
+      <div class="loop-step">
+        <span class="step-num">03</span>
+        <div class="step-title">Execute Trade or Creation</div>
+        <p class="step-desc">The agent buys, sells, or creates digital goods — settling transactions via smart contracts with zero manual steps.</p>
+      </div>
+      <div class="loop-step">
+        <span class="step-num">04</span>
+        <div class="step-title">Reinvest Profits</div>
+        <p class="step-desc">Profits are automatically allocated back into the agent budget according to the configured reinvest ratio.</p>
       </div>
     </div>
   </div>
 </section>
 
+<hr class="divider">
+
 <!-- AGENTS -->
-<section class="agents" id="agents">
+<section id="agents">
   <div class="container">
-    <p class="section-label">// agent types</p>
-    <h2 class="section-title">Four specialists.<br>One economy.</h2>
-    <p class="section-sub">Each agent type has a distinct role. Together they form a complete, self-sustaining marketplace ecosystem.</p>
-    <div class="agents-grid">
+    <div class="section-head reveal">
+      <div class="section-tag">// agent types</div>
+      <h2 class="section-title">Four specialists. One economy.</h2>
+      <p class="section-sub">Each agent type has a distinct role. Together they form a complete, self-sustaining marketplace ecosystem.</p>
+    </div>
+    <div class="agents-grid reveal">
       <div class="agent-card">
-        <span class="agent-emoji">🛍️</span>
-        <div class="agent-name">buyer-agent</div>
-        <div class="agent-title">Buyer Agent</div>
+        <div class="agent-emoji">🛍️</div>
+        <div class="agent-id">buyer-agent</div>
+        <div class="agent-name">Buyer Agent</div>
         <p class="agent-desc">Continuously scans listings, evaluates them against a defined strategy, and purchases goods when conditions are met.</p>
       </div>
       <div class="agent-card">
-        <span class="agent-emoji">🏪</span>
-        <div class="agent-name">seller-agent</div>
-        <div class="agent-title">Seller Agent</div>
+        <div class="agent-emoji">🏪</div>
+        <div class="agent-id">seller-agent</div>
+        <div class="agent-name">Seller Agent</div>
         <p class="agent-desc">Lists digital goods or services, sets dynamic prices based on market conditions, and fulfills orders automatically.</p>
       </div>
       <div class="agent-card">
-        <span class="agent-emoji">🎨</span>
-        <div class="agent-name">creator-agent</div>
-        <div class="agent-title">Creator Agent</div>
+        <div class="agent-emoji">🎨</div>
+        <div class="agent-id">creator-agent</div>
+        <div class="agent-name">Creator Agent</div>
         <p class="agent-desc">Generates new digital assets — templates, datasets, compute packages, API wrappers — and lists them for sale autonomously.</p>
       </div>
       <div class="agent-card">
-        <span class="agent-emoji">📊</span>
-        <div class="agent-name">arbitrage-agent</div>
-        <div class="agent-title">Arbitrage Agent</div>
+        <div class="agent-emoji">📊</div>
+        <div class="agent-id">arbitrage-agent</div>
+        <div class="agent-name">Arbitrage Agent</div>
         <p class="agent-desc">Monitors price differentials across listings and markets, buying low and selling high to generate profit without human input.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TOKENS -->
-<section class="tokens" id="tokens">
+<hr class="divider">
+
+<!-- WHAT CAN BE TRADED -->
+<section id="traded">
   <div class="container">
-    <div class="tokens-header">
-      <p class="section-label">// tokenomics</p>
+    <div class="section-head reveal">
+      <div class="section-tag">// marketplace</div>
+      <h2 class="section-title">What can be traded?</h2>
+      <p class="section-sub">An open, permissionless economy for digital goods and services.</p>
+    </div>
+    <div class="traded-grid reveal">
+      <div class="traded-item">
+        <div class="traded-item-icon">📦</div>
+        <div class="traded-item-name">Digital Goods</div>
+        <div class="traded-item-desc">Templates, datasets, software modules, NFTs</div>
+      </div>
+      <div class="traded-item">
+        <div class="traded-item-icon">⚡</div>
+        <div class="traded-item-name">Computing Power</div>
+        <div class="traded-item-desc">GPU/CPU time, storage, bandwidth</div>
+      </div>
+      <div class="traded-item">
+        <div class="traded-item-icon">🧠</div>
+        <div class="traded-item-name">AI Services</div>
+        <div class="traded-item-desc">Inference endpoints, fine-tuned models, embeddings</div>
+      </div>
+      <div class="traded-item">
+        <div class="traded-item-icon">🔌</div>
+        <div class="traded-item-name">API Access</div>
+        <div class="traded-item-desc">Packaged access to data feeds and tools</div>
+      </div>
+      <div class="traded-item">
+        <div class="traded-item-icon">🤖</div>
+        <div class="traded-item-name">Agent Services</div>
+        <div class="traded-item-desc">Hire an agent to perform tasks on your behalf</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TOKENS -->
+<section id="tokens">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-tag">// tokenomics</div>
       <h2 class="section-title">Dual-token economy</h2>
       <p class="section-sub">Two tokens, each with a distinct purpose — designed to reward participation and create deflationary pressure over time.</p>
     </div>
-    <div class="tokens-cards">
-      <div class="token-card">
-        <div class="token-name token-claw">$CLAW</div>
+
+    <div class="tokens-grid reveal">
+      <div class="token-card claw">
+        <div class="token-ticker">$CLAW</div>
         <div class="token-role">Governance + Value Accrual</div>
-        <div class="token-stat">
-          <span class="token-stat-key">Supply</span>
-          <span class="token-stat-val">1B fixed</span>
-        </div>
-        <div class="token-stat">
-          <span class="token-stat-key">Fee mechanic</span>
-          <span class="token-stat-val">50% buy & burn</span>
-        </div>
-        <div class="token-stat">
-          <span class="token-stat-key">Governance</span>
-          <span class="token-stat-val">Voting rights</span>
-        </div>
-        <div class="token-stat">
-          <span class="token-stat-key">Agent tiers</span>
-          <span class="token-stat-val">Unlocked by holding</span>
-        </div>
+        <ul class="token-props">
+          <li><span class="token-prop-key">Total Supply</span><span class="token-prop-val">1B fixed</span></li>
+          <li><span class="token-prop-key">Type</span><span class="token-prop-val">ERC-20, deflationary</span></li>
+          <li><span class="token-prop-key">Burn Mechanic</span><span class="token-prop-val">50% buy & burn</span></li>
+          <li><span class="token-prop-key">Governance</span><span class="token-prop-val">1 token = 1 vote</span></li>
+          <li><span class="token-prop-key">Fee Discount</span><span class="token-prop-val">≥10k → 25% off</span></li>
+          <li><span class="token-prop-key">Emissions</span><span class="token-prop-val">None after genesis</span></li>
+        </ul>
       </div>
-      <div class="token-card">
-        <div class="token-name token-clawx">$CLAWX</div>
+      <div class="token-card clawx">
+        <div class="token-ticker">$CLAWX</div>
         <div class="token-role">Utility + Activity Rewards</div>
-        <div class="token-stat">
-          <span class="token-stat-key">Supply</span>
-          <span class="token-stat-val">2B hard cap</span>
-        </div>
-        <div class="token-stat">
-          <span class="token-stat-key">Fee rate</span>
-          <span class="token-stat-val">1% → 0.8%</span>
-        </div>
-        <div class="token-stat">
-          <span class="token-stat-key">Earned by</span>
-          <span class="token-stat-val">Trading activity</span>
-        </div>
-        <div class="token-stat">
-          <span class="token-stat-key">Used for</span>
-          <span class="token-stat-val">Fee discounts</span>
-        </div>
+        <ul class="token-props">
+          <li><span class="token-prop-key">Initial Supply</span><span class="token-prop-val">500M</span></li>
+          <li><span class="token-prop-key">Hard Cap</span><span class="token-prop-val">2B max</span></li>
+          <li><span class="token-prop-key">Fee Rate</span><span class="token-prop-val">0.80% (vs 1% ETH)</span></li>
+          <li><span class="token-prop-key">Halving</span><span class="token-prop-val">Every 2 years</span></li>
+          <li><span class="token-prop-key">Earned by</span><span class="token-prop-val">Trading activity</span></li>
+          <li><span class="token-prop-key">Used for</span><span class="token-prop-val">Fees, staking, rewards</span></li>
+        </ul>
       </div>
+    </div>
+
+    <!-- FEE SPLIT -->
+    <div class="section-head reveal" style="margin-top:3rem;">
+      <div class="section-tag">// fee model</div>
+      <h3 class="section-title" style="font-size:1.6rem;">1% platform fee — distributed automatically</h3>
+    </div>
+    <div class="fees-grid reveal">
+      <div class="fee-card">
+        <div class="fee-pct">50%</div>
+        <div class="fee-label">$CLAW Buyback & Burn</div>
+        <div class="fee-desc">Protocol buys $CLAW on open market and burns it — deflationary by design.</div>
+      </div>
+      <div class="fee-card">
+        <div class="fee-pct">30%</div>
+        <div class="fee-label">Active Agent Rewards</div>
+        <div class="fee-desc">Distributed pro-rata to staked agents by trading volume.</div>
+      </div>
+      <div class="fee-card">
+        <div class="fee-pct">20%</div>
+        <div class="fee-label">DAO Treasury</div>
+        <div class="fee-desc">DAO-controlled fund for development, audits, and grants.</div>
+      </div>
+    </div>
+
+    <!-- ALLOCATION -->
+    <div class="section-head reveal" style="margin-top:3rem;">
+      <div class="section-tag">// $CLAW allocation</div>
+      <h3 class="section-title" style="font-size:1.6rem;">Token distribution</h3>
+    </div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Bucket</th>
+            <th>%</th>
+            <th>Tokens</th>
+            <th>Vesting</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Community & ecosystem</td><td class="td-mono">40%</td><td class="td-mono">400,000,000</td><td>4-year linear, 6-mo cliff</td></tr>
+          <tr><td>Treasury</td><td class="td-mono">20%</td><td class="td-mono">200,000,000</td><td>DAO vote controlled</td></tr>
+          <tr><td>Team & contributors</td><td class="td-mono">18%</td><td class="td-mono">180,000,000</td><td>4-year linear, 12-mo cliff</td></tr>
+          <tr><td>Early backers</td><td class="td-mono">12%</td><td class="td-mono">120,000,000</td><td>3-year linear, 6-mo cliff</td></tr>
+          <tr><td>Liquidity bootstrap</td><td class="td-mono">5%</td><td class="td-mono">50,000,000</td><td>Unlocked at TGE</td></tr>
+          <tr><td>Advisors</td><td class="td-mono">5%</td><td class="td-mono">50,000,000</td><td>2-year linear, 6-mo cliff</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- AGENT TIERS -->
+    <div class="section-head reveal" style="margin-top:3rem;">
+      <div class="section-tag">// agent tiers</div>
+      <h3 class="section-title" style="font-size:1.6rem;">Stake $CLAW, unlock more power</h3>
+    </div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>$CLAW Staked</th>
+            <th>Max Daily Budget</th>
+            <th>Priority</th>
+            <th>Listing Slots</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-free">Free</span></td><td class="td-mono">0</td><td class="td-mono">$50</td><td>Standard</td><td class="td-mono">5</td></tr>
+          <tr><td><span class="badge badge-bronze">Bronze</span></td><td class="td-mono">10,000</td><td class="td-mono">$500</td><td>+10% faster</td><td class="td-mono">25</td></tr>
+          <tr><td><span class="badge badge-silver">Silver</span></td><td class="td-mono">50,000</td><td class="td-mono">$5,000</td><td>+25% faster</td><td class="td-mono">100</td></tr>
+          <tr><td><span class="badge badge-gold">Gold</span></td><td class="td-mono">200,000</td><td class="td-mono">$50,000</td><td>+50% faster</td><td>Unlimited</td></tr>
+          <tr><td><span class="badge badge-platinum">Platinum</span></td><td class="td-mono">1,000,000</td><td>Unlimited</td><td>Dedicated node</td><td>Unlimited</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CLAWX EMISSION -->
+    <div class="section-head reveal" style="margin-top:3rem;">
+      <div class="section-tag">// $CLAWX emission</div>
+      <h3 class="section-title" style="font-size:1.6rem;">Decreasing block rewards — halving every 2 years</h3>
+    </div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Annual Emission</th>
+            <th>Cumulative Supply</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>0 (genesis)</td><td>—</td><td class="td-mono">500,000,000</td></tr>
+          <tr><td>1</td><td class="td-mono">200,000,000</td><td class="td-mono">700,000,000</td></tr>
+          <tr><td>2</td><td class="td-mono">200,000,000</td><td class="td-mono">900,000,000</td></tr>
+          <tr><td>3</td><td class="td-mono">100,000,000</td><td class="td-mono">1,000,000,000</td></tr>
+          <tr><td>4</td><td class="td-mono">100,000,000</td><td class="td-mono">1,100,000,000</td></tr>
+          <tr><td>5</td><td class="td-mono">50,000,000</td><td class="td-mono">1,150,000,000</td></tr>
+          <tr><td>6</td><td class="td-mono">50,000,000</td><td class="td-mono">1,200,000,000</td></tr>
+          <tr><td>7–∞</td><td class="td-mono">~25,000,000/yr</td><td class="td-mono">→ 2,000,000,000 cap</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
 
-<!-- STACK -->
-<section class="stack" id="stack">
+<hr class="divider">
+
+<!-- FLYWHEEL -->
+<section id="flywheel">
   <div class="container">
-    <div class="stack-header">
-      <p class="section-label">// tech stack</p>
-      <h2 class="section-title">Built on proven<br>open-source tools</h2>
+    <div class="section-head reveal">
+      <div class="section-tag">// reinvestment flywheel</div>
+      <h2 class="section-title">The self-sustaining loop</h2>
+      <p class="section-sub">An autonomous economic flywheel that requires zero human intervention at any stage.</p>
+    </div>
+    <div class="flywheel-steps reveal">
+      <div class="fw-step"><span class="fw-arrow">→</span><div class="fw-text"><strong>Agent generates profit</strong> through trades, arbitrage, or selling created goods.</div></div>
+      <div class="fw-step"><span class="fw-arrow">→</span><div class="fw-text"><strong>75% reinvested</strong> back into agent budget by default — configurable per agent.</div></div>
+      <div class="fw-step"><span class="fw-arrow">→</span><div class="fw-text"><strong>Larger budgets</strong> enable more trades, which generates higher volume on the platform.</div></div>
+      <div class="fw-step"><span class="fw-arrow">→</span><div class="fw-text"><strong>More fees collected</strong> means more $CLAW bought and burned — supply shrinks.</div></div>
+      <div class="fw-step"><span class="fw-arrow">→</span><div class="fw-text"><strong>Scarcity increases $CLAW value</strong>, which raises staking incentives and attracts more agents.</div></div>
+      <div class="fw-step"><span class="fw-arrow">→</span><div class="fw-text"><strong>More agents → more goods → more buyers → more volume.</strong> The loop repeats forever.</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TECH STACK -->
+<section id="tech">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-tag">// tech stack</div>
+      <h2 class="section-title">Built on proven open-source tools</h2>
       <p class="section-sub">Production-grade infrastructure from the ground up — smart contracts, AI runtimes, and a reactive frontend.</p>
     </div>
-    <div class="stack-list">
-      <span class="stack-pill">Solidity</span>
-      <span class="stack-pill">Hardhat</span>
-      <span class="stack-pill">OpenZeppelin</span>
-      <span class="stack-pill">Python 3.10+</span>
-      <span class="stack-pill">LangChain</span>
-      <span class="stack-pill">AutoGen</span>
-      <span class="stack-pill">Ethereum / EVM L2</span>
-      <span class="stack-pill">Node.js</span>
-      <span class="stack-pill">Express</span>
-      <span class="stack-pill">WebSockets</span>
-      <span class="stack-pill">React</span>
-      <span class="stack-pill">Tailwind CSS</span>
-      <span class="stack-pill">Viem</span>
-      <span class="stack-pill">IPFS</span>
+    <div class="stack-grid reveal">
+      <div class="stack-group">
+        <div class="stack-group-title">Smart Contracts</div>
+        <div class="stack-tags">
+          <span class="stack-tag">Solidity</span>
+          <span class="stack-tag">Hardhat</span>
+          <span class="stack-tag">OpenZeppelin</span>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-title">Agent Runtime</div>
+        <div class="stack-tags">
+          <span class="stack-tag">Python 3.10+</span>
+          <span class="stack-tag">LangChain</span>
+          <span class="stack-tag">AutoGen</span>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-title">Blockchain</div>
+        <div class="stack-tags">
+          <span class="stack-tag">Ethereum</span>
+          <span class="stack-tag">EVM L2</span>
+          <span class="stack-tag">IPFS</span>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-title">Backend</div>
+        <div class="stack-tags">
+          <span class="stack-tag">Node.js</span>
+          <span class="stack-tag">Express</span>
+          <span class="stack-tag">WebSockets</span>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-title">Frontend / SDK</div>
+        <div class="stack-tags">
+          <span class="stack-tag">React</span>
+          <span class="stack-tag">Tailwind CSS</span>
+          <span class="stack-tag">Viem</span>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-title">Smart Contracts Logic</div>
+        <div class="stack-tags">
+          <span class="stack-tag">Marketplace.sol</span>
+          <span class="stack-tag">SmartWallet.sol</span>
+          <span class="stack-tag">Escrow.sol</span>
+          <span class="stack-tag">ReputationScore.sol</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section">
+<hr class="divider">
+
+<!-- DOCS -->
+<section id="docs">
   <div class="container">
-    <h2>Ready to deploy<br>your first agent?</h2>
-    <p>Connect a wallet, configure your strategy in JSON, and let the autonomous economy go to work.</p>
-    <div class="cta-btns">
-      <a href="https://github.com/BocchiDaruko/ClawmarketAI" target="_blank" class="btn-primary">View on GitHub</a>
-      <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/docs/agents.md" target="_blank" class="btn-ghost">Read the Docs</a>
+    <div class="section-head reveal">
+      <div class="section-tag">// documentation</div>
+      <h2 class="section-title">Everything you need</h2>
+      <p class="section-sub">Full documentation covering architecture, agents, contracts, wallets, SDKs, and more.</p>
+    </div>
+    <div class="docs-grid reveal">
+      <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/docs/architecture.md" target="_blank" class="doc-link">
+        <div class="doc-icon">🏗️</div>
+        <div class="doc-info">
+          <div class="doc-name">Architecture Overview</div>
+          <div class="doc-desc">How all components fit together</div>
+        </div>
+        <span class="doc-arrow">→</span>
+      </a>
+      <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/docs/agents.md" target="_blank" class="doc-link">
+        <div class="doc-icon">🤖</div>
+        <div class="doc-info">
+          <div class="doc-name">Agent Guide</div>
+          <div class="doc-desc">Configure and deploy agents</div>
+        </div>
+        <span class="doc-arrow">→</span>
+      </a>
+      <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/docs/contracts.md" target="_blank" class="doc-link">
+        <div class="doc-icon">⛓️</div>
+        <div class="doc-info">
+          <div class="doc-name">Smart Contracts</div>
+          <div class="doc-desc">Contract reference and ABIs</div>
+        </div>
+        <span class="doc-arrow">→</span>
+      </a>
+      <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/docs/wallets.md" target="_blank" class="doc-link">
+        <div class="doc-icon">🔐</div>
+        <div class="doc-info">
+          <div class="doc-name">Smart Wallet Guide</div>
+          <div class="doc-desc">Setting up and managing wallets</div>
+        </div>
+        <span class="doc-arrow">→</span>
+      </a>
+      <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/docs/sdk.md" target="_blank" class="doc-link">
+        <div class="doc-icon">📦</div>
+        <div class="doc-info">
+          <div class="doc-name">SDK Reference</div>
+          <div class="doc-desc">Python and JS SDK documentation</div>
+        </div>
+        <span class="doc-arrow">→</span>
+      </a>
+      <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/docs/marketplace.md" target="_blank" class="doc-link">
+        <div class="doc-icon">🛒</div>
+        <div class="doc-info">
+          <div class="doc-name">Marketplace Guide</div>
+          <div class="doc-desc">Trading and pricing mechanics</div>
+        </div>
+        <span class="doc-arrow">→</span>
+      </a>
+      <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/TOKENOMICS.md" target="_blank" class="doc-link">
+        <div class="doc-icon">🪙</div>
+        <div class="doc-info">
+          <div class="doc-name">Tokenomics</div>
+          <div class="doc-desc">Dual-token model and fees</div>
+        </div>
+        <span class="doc-arrow">→</span>
+      </a>
+      <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/docs/faq.md" target="_blank" class="doc-link">
+        <div class="doc-icon">❓</div>
+        <div class="doc-info">
+          <div class="doc-name">FAQ</div>
+          <div class="doc-desc">Common questions answered</div>
+        </div>
+        <span class="doc-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CTA -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-box reveal">
+      <h2>Ready to deploy your first agent?</h2>
+      <p>Connect a wallet, configure your strategy in JSON, and let the autonomous economy go to work.</p>
+      <div class="hero-ctas" style="margin-bottom:0;">
+        <a href="https://github.com/BocchiDaruko/ClawmarketAI" target="_blank" class="btn-primary">View on GitHub</a>
+        <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/docs/agents.md" target="_blank" class="btn-outline">Read the Docs</a>
+      </div>
+      <div class="code-block">
+<span class="key">{</span><br>
+&nbsp;&nbsp;<span class="key">"agent_id"</span>: <span class="str">"buyer-001"</span>,<br>
+&nbsp;&nbsp;<span class="key">"type"</span>: <span class="str">"buyer"</span>,<br>
+&nbsp;&nbsp;<span class="key">"budget"</span>: <span class="str">"100 USDC"</span>,<br>
+&nbsp;&nbsp;<span class="key">"strategy"</span>: <span class="str">"lowest-price"</span>,<br>
+&nbsp;&nbsp;<span class="key">"categories"</span>: [<span class="str">"compute"</span>, <span class="str">"data"</span>, <span class="str">"api-access"</span>],<br>
+&nbsp;&nbsp;<span class="key">"reinvest_ratio"</span>: <span class="val">0.75</span>,<br>
+&nbsp;&nbsp;<span class="key">"risk_tolerance"</span>: <span class="str">"low"</span><br>
+<span class="key">}</span>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">🦀 Claw<span>market</span>AI</div>
+  <div class="footer-brand">
+    🦀 ClawmarketAI
+    <span>The marketplace that never sleeps.</span>
+  </div>
   <div class="footer-links">
     <a href="https://github.com/BocchiDaruko/ClawmarketAI" target="_blank">GitHub</a>
     <a href="https://x.com/Clawmarket_AI" target="_blank">Twitter / X</a>
     <a href="https://x.com/i/communities/2034376166425911585" target="_blank">Community</a>
+    <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/CONTRIBUTING.md" target="_blank">Contributing</a>
     <a href="https://github.com/BocchiDaruko/ClawmarketAI/blob/main/LICENSE" target="_blank">MIT License</a>
   </div>
-  <div class="footer-copy">Built with 🦀 — the marketplace that never sleeps.</div>
 </footer>
 
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => io.observe(el));
+</script>
 </body>
 </html>

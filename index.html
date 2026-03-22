@@ -745,6 +745,216 @@
     footer { flex-direction: column; text-align: center; }
     .fees-grid { grid-template-columns: 1fr; }
   }
+
+  /* LIVE COUNTER TICKER */
+  #live-counter {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .live-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .live-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+    animation: pulse-dot 2s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse-dot {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .live-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .live-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 80px;
+    transition: color 0.3s;
+  }
+  .live-val.flash { color: #22c55e; }
+
+  /* SIMULATOR */
+  #simulator {
+    padding: 7rem 0;
+    background: var(--bg);
+  }
+  .sim-wrapper {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #060c10;
+  }
+  .sim-topbar {
+    background: #0a1520;
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .sim-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .sim-dot.red { background: #ff5f57; }
+  .sim-dot.yellow { background: #febc2e; }
+  .sim-dot.green { background: #28c840; }
+  .sim-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-left: 0.75rem;
+    flex: 1;
+  }
+  .sim-status {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    background: rgba(34,197,94,0.15);
+    color: #22c55e;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .sim-status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: pulse-dot 1.5s infinite;
+  }
+  .sim-controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    background: #080f16;
+    flex-wrap: wrap;
+  }
+  .sim-select {
+    background: #0d1a22;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+  }
+  .sim-btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.45rem 1.1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .sim-btn:hover { opacity: 0.85; }
+  .sim-btn.stop {
+    background: transparent;
+    border: 1px solid rgba(255,100,100,0.4);
+    color: #ff6b6b;
+  }
+  .sim-btn.stop:hover { background: rgba(255,107,107,0.1); opacity: 1; }
+  .sim-btn.clear {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .sim-btn.clear:hover { color: var(--text); opacity: 1; }
+  .sim-stats-row {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .sim-stat-box {
+    flex: 1;
+    padding: 0.85rem 1.25rem;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .sim-stat-box:last-child { border-right: none; }
+  .sim-stat-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .sim-stat-val.green { color: #22c55e; }
+  .sim-stat-val.yellow { color: var(--claw); }
+  .sim-stat-lbl {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: 'Space Mono', monospace;
+  }
+  .sim-terminal {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1.9;
+    padding: 1.25rem 1.5rem;
+    height: 340px;
+    overflow-y: auto;
+    color: #a8d8ea;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,212,255,0.2) transparent;
+  }
+  .sim-terminal::-webkit-scrollbar { width: 4px; }
+  .sim-terminal::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.2); border-radius: 2px; }
+  .sim-line { display: flex; gap: 0.75rem; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+  .sim-time { color: #3a5a6a; flex-shrink: 0; }
+  .sim-tag {
+    flex-shrink: 0;
+    padding: 0.05rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+  .tag-buyer { background: rgba(0,212,255,0.15); color: var(--accent); }
+  .tag-seller { background: rgba(247,183,49,0.15); color: var(--claw); }
+  .tag-creator { background: rgba(168,110,255,0.15); color: #a86eff; }
+  .tag-arbitrage { background: rgba(255,107,53,0.15); color: var(--accent2); }
+  .tag-system { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .tag-tx { background: rgba(34,197,94,0.1); color: #22c55e; }
+  .sim-msg { flex: 1; }
+  .sim-msg .amt { color: var(--claw); font-weight: 700; }
+  .sim-msg .addr { color: #4a8a9a; }
+  .sim-msg .hash { color: #2a6a7a; }
+  .sim-cursor {
+    display: inline-block;
+    width: 8px; height: 13px;
+    background: var(--accent);
+    animation: blink 1s infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 </style>
 </head>
 <body>
@@ -790,6 +1000,39 @@
       <span class="wallet-option-tag">Solana</span>
     </button>
     <div class="wallet-not-installed" id="phNotInstalled">Phantom no detectado — <a href="https://phantom.app/download" target="_blank" style="color:var(--accent)">instalar →</a></div>
+  </div>
+</div>
+
+
+<!-- LIVE AGENT COUNTER -->
+<div id="live-counter">
+  <div class="live-stat">
+    <div class="live-dot"></div>
+    <div>
+      <div class="live-label">Active Agents</div>
+      <div class="live-val" id="cnt-agents">1,247</div>
+    </div>
+  </div>
+  <div class="live-stat">
+    <div class="live-dot"></div>
+    <div>
+      <div class="live-label">Trades / 24h</div>
+      <div class="live-val" id="cnt-trades">38,902</div>
+    </div>
+  </div>
+  <div class="live-stat">
+    <div class="live-dot"></div>
+    <div>
+      <div class="live-label">Volume (USDC)</div>
+      <div class="live-val" id="cnt-volume">$2.41M</div>
+    </div>
+  </div>
+  <div class="live-stat">
+    <div class="live-dot"></div>
+    <div>
+      <div class="live-label">$CLAW Burned</div>
+      <div class="live-val" id="cnt-burned">4,812,340</div>
+    </div>
   </div>
 </div>
 
@@ -1303,6 +1546,81 @@
 </section>
 
 <!-- FOOTER -->
+
+<hr class="divider">
+
+<!-- AGENT DEPLOY SIMULATOR -->
+<section id="simulator">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-tag">// live simulator</div>
+      <h2 class="section-title">Watch agents deploy in real time</h2>
+      <p class="section-sub">Select an agent type, deploy it, and watch the autonomous decision loop run live on the terminal.</p>
+    </div>
+    <div class="sim-wrapper reveal">
+      <!-- topbar -->
+      <div class="sim-topbar">
+        <div class="sim-dot red"></div>
+        <div class="sim-dot yellow"></div>
+        <div class="sim-dot green"></div>
+        <div class="sim-title">clawmarketai — agent-runtime v1.0 — bash</div>
+        <div class="sim-status"><div class="sim-status-dot"></div>RUNNING</div>
+      </div>
+      <!-- controls -->
+      <div class="sim-controls">
+        <select class="sim-select" id="agentType">
+          <option value="buyer">🛍️  buyer-agent</option>
+          <option value="seller">🏪  seller-agent</option>
+          <option value="creator">🎨  creator-agent</option>
+          <option value="arbitrage">📊  arbitrage-agent</option>
+        </select>
+        <select class="sim-select" id="agentStrategy">
+          <option value="lowest-price">Strategy: lowest-price</option>
+          <option value="highest-margin">Strategy: highest-margin</option>
+          <option value="balanced">Strategy: balanced</option>
+          <option value="aggressive">Strategy: aggressive</option>
+        </select>
+        <select class="sim-select" id="agentBudget">
+          <option value="100">Budget: 100 USDC</option>
+          <option value="500">Budget: 500 USDC</option>
+          <option value="1000">Budget: 1,000 USDC</option>
+          <option value="5000">Budget: 5,000 USDC</option>
+        </select>
+        <button class="sim-btn" id="deployBtn" onclick="simDeploy()">▶ Deploy Agent</button>
+        <button class="sim-btn stop" onclick="simStop()">■ Stop</button>
+        <button class="sim-btn clear" onclick="simClear()">✕ Clear</button>
+      </div>
+      <!-- stats row -->
+      <div class="sim-stats-row">
+        <div class="sim-stat-box">
+          <span class="sim-stat-val" id="sim-trades">0</span>
+          <span class="sim-stat-lbl">Trades</span>
+        </div>
+        <div class="sim-stat-box">
+          <span class="sim-stat-val green" id="sim-profit">+$0.00</span>
+          <span class="sim-stat-lbl">Profit</span>
+        </div>
+        <div class="sim-stat-box">
+          <span class="sim-stat-val yellow" id="sim-reinvested">$0.00</span>
+          <span class="sim-stat-lbl">Reinvested</span>
+        </div>
+        <div class="sim-stat-box">
+          <span class="sim-stat-val" id="sim-cycles">0</span>
+          <span class="sim-stat-lbl">Loop Cycles</span>
+        </div>
+      </div>
+      <!-- terminal -->
+      <div class="sim-terminal" id="simTerminal">
+        <div class="sim-line">
+          <span class="sim-time">00:00:00</span>
+          <span class="sim-tag tag-system">SYSTEM</span>
+          <span class="sim-msg">ClawmarketAI agent runtime ready. Select an agent and press <strong style="color:var(--accent)">Deploy</strong>.<span class="sim-cursor"></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="footer-brand">
     🦀 ClawmarketAI
@@ -1392,6 +1710,164 @@
       setConnected(resp.publicKey.toString(), 'Phantom');
     } catch(e) { console.warn('Phantom:', e.message); }
   }
+
+
+  // ── LIVE COUNTER ──────────────────────────────────────────────────────────
+  const liveCounters = {
+    agents:  { el: document.getElementById('cnt-agents'),  val: 1247,      step: () => Math.random() > 0.6 ? 1 : 0,       fmt: v => v.toLocaleString() },
+    trades:  { el: document.getElementById('cnt-trades'),  val: 38902,     step: () => Math.floor(Math.random()*4),        fmt: v => v.toLocaleString() },
+    volume:  { el: document.getElementById('cnt-volume'),  val: 2410000,   step: () => Math.floor(Math.random()*300),      fmt: v => '$' + (v/1e6).toFixed(2) + 'M' },
+    burned:  { el: document.getElementById('cnt-burned'),  val: 4812340,   step: () => Math.floor(Math.random()*150),      fmt: v => v.toLocaleString() },
+  };
+  function flash(el) {
+    el.classList.add('flash');
+    setTimeout(() => el.classList.remove('flash'), 400);
+  }
+  setInterval(() => {
+    Object.values(liveCounters).forEach(c => {
+      const delta = c.step();
+      if (delta > 0) {
+        c.val += delta;
+        c.el.textContent = c.fmt(c.val);
+        flash(c.el);
+      }
+    });
+  }, 1800);
+
+  // ── SIMULATOR ─────────────────────────────────────────────────────────────
+  let simInterval = null;
+  let simRunning = false;
+  let simTrades = 0, simProfit = 0, simReinvested = 0, simCycles = 0;
+  let simAgentId = '';
+
+  const agentMessages = {
+    buyer: [
+      ['SCAN',   () => 'Scanning marketplace... found <span class="amt">' + (Math.floor(Math.random()*80)+20) + '</span> active listings'],
+      ['EVAL',   () => 'Evaluating listings against strategy <span class="amt">lowest-price</span>'],
+      ['MATCH',  () => 'Best match: <span class="amt">compute-pkg-' + randId() + '</span> @ <span class="amt">$' + rand(5,40) + '.00 USDC</span>'],
+      ['BUY',    () => 'Submitting buy order via SmartWallet...'],
+      ['TX',     () => 'Tx confirmed <span class="hash">0x' + randHex() + '</span> · block <span class="addr">' + (Math.floor(Math.random()*9e6)+18e6) + '</span>'],
+      ['PROFIT', () => 'Gross margin: <span class="amt">+$' + rand(2,18) + '.' + pad2() + '</span> USDC'],
+      ['REINVEST',() => 'Reinvesting <span class="amt">75%</span> → budget updated'],
+    ],
+    seller: [
+      ['LIST',   () => 'Creating new listing: <span class="amt">api-bundle-' + randId() + '</span>'],
+      ['PRICE',  () => 'Dynamic pricing engine: market avg <span class="amt">$' + rand(20,90) + '</span> → listing at <span class="amt">$' + rand(15,85) + '</span>'],
+      ['WAIT',   () => 'Monitoring for buyer match...'],
+      ['MATCH',  () => 'Buyer matched: <span class="addr">0x' + randAddr() + '</span>'],
+      ['ESCROW', () => 'Funds locked in Escrow contract <span class="hash">0x' + randHex() + '</span>'],
+      ['DELIVER',() => 'Delivering goods via IPFS → <span class="hash">Qm' + randHex(20) + '</span>'],
+      ['SETTLE', () => 'Escrow released: <span class="amt">+$' + rand(15,85) + '.00 USDC</span>'],
+    ],
+    creator: [
+      ['GEN',    () => 'Generating new digital asset: <span class="amt">dataset-v' + (Math.floor(Math.random()*10)+1) + '-' + randId() + '</span>'],
+      ['BUILD',  () => 'Packaging asset bundle... <span class="addr">' + (Math.floor(Math.random()*900)+100) + ' records</span>'],
+      ['IPFS',   () => 'Uploading to IPFS → <span class="hash">Qm' + randHex(20) + '</span>'],
+      ['LIST',   () => 'Auto-listing at dynamic price: <span class="amt">$' + rand(8,60) + '.00 USDC</span>'],
+      ['SELL',   () => 'Sale detected! Buyer: <span class="addr">0x' + randAddr() + '</span>'],
+      ['PROFIT', () => 'Revenue: <span class="amt">+$' + rand(8,60) + '.' + pad2() + ' USDC</span>'],
+      ['REINVEST',() => 'Allocating <span class="amt">75%</span> back to creation budget'],
+    ],
+    arbitrage: [
+      ['SCAN',   () => 'Scanning <span class="amt">' + (Math.floor(Math.random()*40)+10) + '</span> market pairs for price gaps...'],
+      ['FOUND',  () => 'Gap detected: <span class="amt">compute-pkg</span> · buy <span class="amt">$' + rand(10,30) + '</span> / sell <span class="amt">$' + rand(31,60) + '</span>'],
+      ['BUY',    () => 'Executing buy leg: <span class="amt">$' + rand(10,30) + '</span> USDC · Tx <span class="hash">0x' + randHex() + '</span>'],
+      ['SELL',   () => 'Executing sell leg: <span class="amt">$' + rand(31,60) + '</span> USDC · Tx <span class="hash">0x' + randHex() + '</span>'],
+      ['PROFIT', () => 'Arbitrage profit: <span class="amt">+$' + rand(5,25) + '.' + pad2() + ' USDC</span>'],
+      ['REINVEST',() => 'Compounding gains → budget <span class="amt">+' + rand(1,8) + '%</span>'],
+    ]
+  };
+
+  function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+  function pad2(){ return String(Math.floor(Math.random()*99)).padStart(2,'0'); }
+  function randId(){ return Math.random().toString(36).slice(2,8); }
+  function randHex(n=8){ let h=''; for(let i=0;i<n;i++) h+='0123456789abcdef'[Math.floor(Math.random()*16)]; return h; }
+  function randAddr(){ return randHex(4)+'...'+randHex(4); }
+
+  function simTime() {
+    const d = new Date();
+    return [d.getHours(),d.getMinutes(),d.getSeconds()].map(n=>String(n).padStart(2,'0')).join(':');
+  }
+
+  function addLine(tag, tagClass, msgHTML) {
+    const term = document.getElementById('simTerminal');
+    const line = document.createElement('div');
+    line.className = 'sim-line';
+    line.innerHTML = '<span class="sim-time">' + simTime() + '</span>' +
+      '<span class="sim-tag ' + tagClass + '">' + tag + '</span>' +
+      '<span class="sim-msg">' + msgHTML + '</span>';
+    term.appendChild(line);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  function updateSimStats(tradeHappened, profit) {
+    if (tradeHappened) {
+      simTrades++;
+      simProfit += profit;
+      simReinvested += profit * 0.75;
+    }
+    simCycles++;
+    document.getElementById('sim-trades').textContent = simTrades;
+    document.getElementById('sim-profit').textContent = '+$' + simProfit.toFixed(2);
+    document.getElementById('sim-reinvested').textContent = '$' + simReinvested.toFixed(2);
+    document.getElementById('sim-cycles').textContent = simCycles;
+    // also tick global counter
+    liveCounters.trades.val += tradeHappened ? 1 : 0;
+    liveCounters.agents.val += 0;
+  }
+
+  function simDeploy() {
+    if (simRunning) return;
+    simRunning = true;
+    const type = document.getElementById('agentType').value;
+    const strategy = document.getElementById('agentStrategy').value;
+    const budget = document.getElementById('agentBudget').value;
+    simAgentId = type + '-' + randId();
+
+    const tagClass = 'tag-' + type;
+    const msgs = agentMessages[type];
+
+    addLine('SYSTEM', 'tag-system', '$ npm run agent:deploy --type=' + type + ' --strategy=' + strategy + ' --budget=' + budget + 'USDC');
+    setTimeout(() => addLine('SYSTEM', 'tag-system', 'Initializing agent <span class="amt">' + simAgentId + '</span>...'), 400);
+    setTimeout(() => addLine('SYSTEM', 'tag-system', 'Connecting to marketplace RPC endpoint...'), 900);
+    setTimeout(() => addLine('SYSTEM', 'tag-system', 'SmartWallet initialized · spending limit: <span class="amt">' + budget + ' USDC</span>'), 1400);
+    setTimeout(() => {
+      addLine('SYSTEM', 'tag-system', '<span style="color:#22c55e">✓ Agent deployed successfully. Starting autonomous loop...</span>');
+      runLoop(type, tagClass, msgs, 0);
+    }, 2000);
+  }
+
+  function runLoop(type, tagClass, msgs, idx) {
+    if (!simRunning) return;
+    const [tag, msgFn] = msgs[idx % msgs.length];
+    addLine(tag, tagClass, msgFn());
+
+    const isProfit = tag === 'PROFIT' || tag === 'SETTLE';
+    const profit = isProfit ? rand(2,25) + Math.random() : 0;
+    updateSimStats(tag === 'TX' || tag === 'SETTLE' || tag === 'SELL' && type === 'arbitrage', profit);
+
+    const delay = tag === 'WAIT' ? rand(1800,3000) : rand(700,1600);
+    simInterval = setTimeout(() => runLoop(type, tagClass, msgs, idx+1), delay);
+  }
+
+  function simStop() {
+    simRunning = false;
+    clearTimeout(simInterval);
+    if (simAgentId) {
+      addLine('SYSTEM', 'tag-system', '<span style="color:#ff6b6b">■ Agent ' + simAgentId + ' stopped.</span>');
+    }
+  }
+
+  function simClear() {
+    simStop();
+    simTrades = 0; simProfit = 0; simReinvested = 0; simCycles = 0; simAgentId = '';
+    document.getElementById('sim-trades').textContent = '0';
+    document.getElementById('sim-profit').textContent = '+$0.00';
+    document.getElementById('sim-reinvested').textContent = '$0.00';
+    document.getElementById('sim-cycles').textContent = '0';
+    document.getElementById('simTerminal').innerHTML = '<div class="sim-line"><span class="sim-time">00:00:00</span><span class="sim-tag tag-system">SYSTEM</span><span class="sim-msg">ClawmarketAI agent runtime ready. Select an agent and press <strong style="color:var(--accent)">Deploy</strong>.<span class="sim-cursor"></span></span></div>';
+  }
+
 </script>
 </body>
 </html>

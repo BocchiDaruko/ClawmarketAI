@@ -620,6 +620,126 @@
   }
   .reveal.visible { opacity: 1; transform: none; }
 
+  /* WALLET BUTTON */
+  .wallet-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+  .wallet-btn:hover { background: var(--accent); color: var(--bg); }
+  .wallet-btn.connected {
+    border-color: rgba(0,212,255,0.3);
+    color: var(--text);
+    background: rgba(0,212,255,0.07);
+    cursor: default;
+  }
+  .wallet-btn .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    flex-shrink: 0;
+    box-shadow: 0 0 6px #22c55e;
+  }
+
+  /* WALLET MODAL */
+  .wallet-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .wallet-overlay.open { opacity: 1; pointer-events: all; }
+  .wallet-modal {
+    background: #0d1a22;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 380px;
+    transform: translateY(16px);
+    transition: transform 0.2s;
+  }
+  .wallet-overlay.open .wallet-modal { transform: none; }
+  .wallet-modal-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+  }
+  .wallet-modal-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .wallet-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 0.75rem;
+    transition: border-color 0.2s, background 0.2s;
+    background: transparent;
+    width: 100%;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: left;
+  }
+  .wallet-option:hover { border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.04); }
+  .wallet-option:last-child { margin-bottom: 0; }
+  .wallet-option img { width: 32px; height: 32px; border-radius: 8px; }
+  .wallet-option-name { flex: 1; }
+  .wallet-option-tag {
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-weight: 400;
+  }
+  .wallet-modal-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.25rem;
+  }
+  .wallet-modal { position: relative; }
+
+  /* NOT INSTALLED MSG */
+  .wallet-not-installed {
+    font-size: 0.75rem;
+    color: var(--accent2);
+    font-family: 'Space Mono', monospace;
+    margin-top: -0.4rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    display: none;
+  }
+
   @media (max-width: 768px) {
     .nav-links { display: none; }
     footer { flex-direction: column; text-align: center; }
@@ -640,7 +760,38 @@
     <li><a href="#docs">Docs</a></li>
     <li><a href="https://github.com/BocchiDaruko/ClawmarketAI" target="_blank" class="nav-cta">GitHub →</a></li>
   </ul>
+  <button class="wallet-btn" id="walletBtn" onclick="openWalletModal()">Connect Wallet</button>
 </nav>
+
+<!-- WALLET MODAL -->
+<div class="wallet-overlay" id="walletOverlay" onclick="handleOverlayClick(event)">
+  <div class="wallet-modal">
+    <button class="wallet-modal-close" onclick="closeWalletModal()">✕</button>
+    <div class="wallet-modal-title">Connect a wallet</div>
+    <div class="wallet-modal-sub">Choose your wallet to get started.</div>
+
+    <button class="wallet-option" onclick="connectMetaMask()">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask">
+      <span class="wallet-option-name">MetaMask</span>
+      <span class="wallet-option-tag">EVM</span>
+    </button>
+    <div class="wallet-not-installed" id="mmNotInstalled">MetaMask no detectado — <a href="https://metamask.io/download/" target="_blank" style="color:var(--accent)">instalar →</a></div>
+
+    <button class="wallet-option" onclick="connectCoinbase()">
+      <img src="https://avatars.githubusercontent.com/u/18060234?s=200&v=4" alt="Coinbase Wallet">
+      <span class="wallet-option-name">Coinbase Wallet</span>
+      <span class="wallet-option-tag">EVM</span>
+    </button>
+    <div class="wallet-not-installed" id="cbNotInstalled">Coinbase Wallet no detectado — <a href="https://www.coinbase.com/wallet/downloads" target="_blank" style="color:var(--accent)">instalar →</a></div>
+
+    <button class="wallet-option" onclick="connectPhantom()">
+      <img src="https://avatars.githubusercontent.com/u/78782331?s=200&v=4" alt="Phantom">
+      <span class="wallet-option-name">Phantom</span>
+      <span class="wallet-option-tag">Solana</span>
+    </button>
+    <div class="wallet-not-installed" id="phNotInstalled">Phantom no detectado — <a href="https://phantom.app/download" target="_blank" style="color:var(--accent)">instalar →</a></div>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -1171,13 +1322,76 @@
   const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   reveals.forEach(el => io.observe(el));
+
+  // Wallet Modal
+  function openWalletModal() {
+    const btn = document.getElementById('walletBtn');
+    if (btn.classList.contains('connected')) return;
+    document.getElementById('walletOverlay').classList.add('open');
+  }
+  function closeWalletModal() {
+    document.getElementById('walletOverlay').classList.remove('open');
+    hideAllWarnings();
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('walletOverlay')) closeWalletModal();
+  }
+  function hideAllWarnings() {
+    ['mmNotInstalled','cbNotInstalled','phNotInstalled'].forEach(id => {
+      document.getElementById(id).style.display = 'none';
+    });
+  }
+  function setConnected(address, walletName) {
+    const short = address.slice(0,6) + '...' + address.slice(-4);
+    const btn = document.getElementById('walletBtn');
+    btn.innerHTML = '<span class="dot"></span>' + short;
+    btn.classList.add('connected');
+    btn.title = walletName + ': ' + address;
+    closeWalletModal();
+  }
+
+  // MetaMask
+  async function connectMetaMask() {
+    hideAllWarnings();
+    const provider = window.ethereum && (
+      window.ethereum.isMetaMask ? window.ethereum :
+      window.ethereum.providers?.find(p => p.isMetaMask)
+    );
+    if (!provider) { document.getElementById('mmNotInstalled').style.display = 'block'; return; }
+    try {
+      const accounts = await provider.request({ method: 'eth_requestAccounts' });
+      if (accounts[0]) setConnected(accounts[0], 'MetaMask');
+    } catch(e) { console.warn('MetaMask:', e.message); }
+  }
+
+  // Coinbase Wallet
+  async function connectCoinbase() {
+    hideAllWarnings();
+    const provider = window.ethereum && (
+      window.ethereum.isCoinbaseWallet ? window.ethereum :
+      window.ethereum.providers?.find(p => p.isCoinbaseWallet)
+    );
+    if (!provider) { document.getElementById('cbNotInstalled').style.display = 'block'; return; }
+    try {
+      const accounts = await provider.request({ method: 'eth_requestAccounts' });
+      if (accounts[0]) setConnected(accounts[0], 'Coinbase Wallet');
+    } catch(e) { console.warn('Coinbase:', e.message); }
+  }
+
+  // Phantom (Solana)
+  async function connectPhantom() {
+    hideAllWarnings();
+    const phantom = window.solana || window.phantom?.solana;
+    if (!phantom || !phantom.isPhantom) { document.getElementById('phNotInstalled').style.display = 'block'; return; }
+    try {
+      const resp = await phantom.connect();
+      setConnected(resp.publicKey.toString(), 'Phantom');
+    } catch(e) { console.warn('Phantom:', e.message); }
+  }
 </script>
 </body>
 </html>
